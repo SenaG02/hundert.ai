@@ -1,0 +1,133 @@
+/* =============================================================================
+   tokens.css - Hundert AI design system
+   Fonte de verdade dos valores. Nenhum hex pode existir fora deste arquivo.
+
+   Derivado da LP de referencia da V4 Company por observacao visual (8 screenshots),
+   com correcoes de acessibilidade calculadas. Ver DESIGN.md para o porque de cada
+   decisao e research/v4-go-modular-b/OBSERVATIONS.md para a evidencia.
+
+   Marcas: [E-vis] observado no render  [D] derivado por calculo  [I] decidido
+   ============================================================================= */
+
+:root {
+  /* ── Superficies escuras ─────────────────────────────────────────────── */
+  --bg-base:            #0A0A0A; /* [E-vis] fundo dominante da pagina */
+  --bg-elevated:        #141414; /* [E-vis] cards de metrica e linhas de FAQ */
+  --bg-elevated-2:      #1C1C1C; /* [E-vis] bolhas de icone da constelacao */
+  --border-dark:        #262626; /* [E-vis] borda de baixissimo contraste nos cards */
+  --border-dark-accent: #3A1518; /* [E-vis] borda avermelhada do primeiro card da faixa */
+
+  /* ── Superficies claras ──────────────────────────────────────────────── */
+  --bg-inverse:         #FFFFFF; /* [E-vis] painel claro */
+  --bg-inverse-sunken:  #F5F5F5; /* [E-vis] fundo do bloco de depoimentos */
+  --surface-form:       #E9E9E9; /* [E-vis] card do formulario do hero */
+  --surface-field:      #FFFFFF; /* [E-vis] campo dentro do card */
+  --border-light:       #D8D8D8; /* [I] borda de campo: a referencia usa campo sem borda
+                                    visivel, mas campo sem limite falha em foco */
+
+  /* ── Texto ───────────────────────────────────────────────────────────── */
+  --fg-on-dark:         #FFFFFF; /* [E-vis] 19.80:1 sobre --bg-base */
+  --fg-on-dark-muted:   #A3A3A3; /* [E-vis]  7.85:1 sobre --bg-base */
+  --fg-on-light:        #0A0A0A; /* [E-vis] 19.80:1 sobre --bg-inverse */
+  --fg-on-light-muted:  #52525B; /* [E-vis]  7.73:1 sobre --bg-inverse */
+  --fg-on-form-muted:   #5B5B63; /* [D] 5.54:1 sobre --surface-form; o cinza da referencia
+                                    dava 3.98:1 e reprovava */
+
+  /* ── Acento de marca: quantidade, identidade, enfase. Nunca acao ─────── */
+  --accent-brand:       #F0323F; /* [D] 4.93:1 sobre base / 4.59:1 sobre elevated.
+                                    Partiu do vermelho observado (~#E11D2E, 4.16:1) e
+                                    clareou o minimo para passar AA de corpo nos dois fundos */
+  --accent-brand-deep:  #D4172A; /* [D] 5.31:1 sobre --bg-inverse. Mesmo matiz escurecido
+                                    para uso sobre painel claro */
+  --accent-brand-core:  #E11D2E; /* [E-vis] vermelho de identidade. Marca, brilho, formas.
+                                    PROIBIDO em texto: 4.16:1 nao passa AA de corpo */
+  --accent-brand-glow:  rgba(225, 29, 46, 0.18); /* [E-vis] brilho radial de fundo */
+
+  /* ── Acento de acao: decisao. Um por secao ───────────────────────────── */
+  --action:             #16A34A; /* [D] 3.30:1 com branco. So para rotulo >= 18px bold
+                                    (AA de texto grande). O verde observado (~#22C55E)
+                                    dava 2.28:1 e reprovava ate para texto grande */
+  --action-strong:      #15803D; /* [D] 5.02:1 com branco. Obrigatorio em qualquer botao
+                                    com rotulo menor que 18px bold */
+  --action-hover:       #15803D; /* [I] escurece no hover: mantem o rotulo legivel durante
+                                    a transicao, ao contrario de clarear */
+  --action-glow:        rgba(22, 163, 74, 0.35); /* [E-vis] halo difuso do CTA */
+
+  /* ── Superficie de citacao ───────────────────────────────────────────── */
+  --quote-from:         #D93B28; /* [D] 4.56:1 com branco */
+  --quote-to:           #B32A1C; /* [D] 6.43:1 com branco. O coral observado (~#F2594A)
+                                    dava 3.33:1 e reprovava para corpo */
+  --star:               #F5B400; /* [E-vis] decorativo. Exige nota textual ao lado */
+
+  /* ── Tipografia ──────────────────────────────────────────────────────── */
+  --font-display: "Aeonik", "Inter Tight", system-ui, -apple-system, sans-serif; /* [I] */
+  --font-text:    "Aeonik", "Inter Tight", system-ui, -apple-system, sans-serif; /* [I] */
+  --font-mono:    "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;    /* [E-vis]
+                     a referencia troca para monoespacada nos numeros de metrica */
+
+  --text-xs:   0.8125rem; /* 13px [E-vis] eyebrow */
+  --text-sm:   0.875rem;  /* 14px [E-vis] legal, legenda, cargo */
+  --text-base: 1rem;      /* 16px [E-vis] nav, rotulo de aba */
+  --text-md:   1.125rem;  /* 18px [E-vis] corpo, rotulo de CTA */
+  --text-lg:   1.25rem;   /* 20px [D] degrau intermediario */
+  --text-xl:   1.5rem;    /* 24px [E-vis] h3 */
+  --text-2xl:  2rem;      /* 32px [D] h2 em telas medias */
+  --text-3xl:  2.75rem;   /* 44px [E-vis] h2 desktop */
+  --text-4xl:  4rem;      /* 64px [E-vis] h1 desktop */
+
+  --leading-display: 1.05; /* [E-vis] o H1 de 4 linhas quase se toca */
+  --leading-heading: 1.15; /* [E-vis] */
+  --leading-body:    1.55; /* [E-vis] */
+  --tracking-display: -0.02em; /* [E-vis] */
+  --tracking-eyebrow:  0.12em; /* [E-vis] caixa alta aberta */
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-bold:    700;
+
+  /* ── Espaco: base 8 ──────────────────────────────────────────────────── */
+  --space-1:  0.25rem;  /*   4px */
+  --space-2:  0.5rem;   /*   8px */
+  --space-3:  0.75rem;  /*  12px */
+  --space-4:  1rem;     /*  16px */
+  --space-6:  1.5rem;   /*  24px */
+  --space-8:  2rem;     /*  32px */
+  --space-12: 3rem;     /*  48px */
+  --space-16: 4rem;     /*  64px */
+  --space-24: 6rem;     /*  96px */
+  --space-32: 8rem;     /* 128px */
+  --space-40: 10rem;    /* 160px [E-vis] respiro vertical de secao no desktop */
+
+  --container:      80rem;  /* 1280px [E-vis] */
+  --gutter-mobile:  var(--space-6);
+  --gutter-desktop: var(--space-16);
+  --measure:        65ch;   /* [I] limite de linha do corpo */
+
+  /* ── Forma ───────────────────────────────────────────────────────────── */
+  --radius-field:   10px;  /* [E-vis] campo de formulario */
+  --radius-card:    16px;  /* [E-vis] card escuro, linha de FAQ */
+  --radius-card-lg: 24px;  /* [E-vis] card do formulario, card branco de servico */
+  --radius-panel:   56px;  /* [E-vis] canto do painel claro contra o escuro */
+  --radius-pill:    999px; /* [E-vis] CTA e pill de aba */
+
+  /* ── Elevacao. A referencia quase nao usa sombra no escuro: separa por cor ── */
+  --shadow-bubble: 0 8px 24px rgba(0, 0, 0, 0.12);          /* [E-vis] bolha de logo no claro */
+  --shadow-cta:    0 0 32px var(--action-glow);             /* [E-vis] halo do CTA */
+  --shadow-card:   0 1px 3px rgba(0, 0, 0, 0.08);           /* [E-vis] card no painel claro */
+
+  /* ── Movimento. Nao observavel em screenshot: tudo [I] ───────────────── */
+  --ease-out:     cubic-bezier(0.16, 1, 0.30, 1); /* [I] desaceleracao longa */
+  --ease-standard: cubic-bezier(0.20, 0, 0.20, 1); /* [I] */
+  --dur-fast:   140ms; /* [I] realce de estado */
+  --dur-normal: 220ms; /* [I] hover, foco, troca de aba */
+  --dur-slow:   600ms; /* [I] entrada de secao */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0.01ms;
+    --dur-normal: 0.01ms;
+    --dur-slow: 0.01ms;
+  }
+}

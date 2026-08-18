@@ -9,8 +9,11 @@
    Run: node scripts/bootstrap-harness.mjs
 
    Until then, Claude reads manifest globalCssPaths at runtime.
-   Do NOT add token values here - edit them in the bound DS.
+   Do NOT add token values here - edit them in tokens.css.
    ============================================================================= */
+
+/* Hundert AI: sem DS compilado ainda, tokens.css e a fonte de verdade. */
+@import "tokens.css";
 
 @media (prefers-reduced-motion: reduce) {
   *,
