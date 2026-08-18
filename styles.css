@@ -1,0 +1,24 @@
+/* =============================================================================
+   styles.css - root canvas token entry (UNBOUND)
+
+   This harness ships without a bound design system. After the host DS is present:
+
+   Builder: ./_ds_manifest.json + ./_ds_bundle.js at project root
+   Consumer: ./_ds/<bundle>/ with the same files
+
+   Run: node scripts/bootstrap-harness.mjs
+
+   Until then, Claude reads manifest globalCssPaths at runtime.
+   Do NOT add token values here - edit them in the bound DS.
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

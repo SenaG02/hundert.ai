@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+Thumbs.db
+.thumbnail
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Generated at runtime (canvas auto-setup or bootstrap-harness.mjs)
+/BOUND_DS.json
+/ds-helmet.snippet.html
+/.cdp/
+
+# Host-project design system — provided by the host project, never shipped with the harness
+# (see README "The harness does NOT ship _ds/" + CLAUDE.md "ships without a pre-bound design system")
+/_ds/
+
+# Local-only archive (reference material, not published with the harness)
+/_archive/
+
+# Logs / temp
+*.log
+.tmp/
+
+# Local-only scratch (audits, reanalysis, session notes — never commit)
+/.local/

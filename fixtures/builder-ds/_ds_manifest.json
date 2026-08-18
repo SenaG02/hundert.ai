@@ -1,0 +1,10 @@
+{
+  "namespace": "FixtureDS_0001",
+  "components": [
+    { "name": "Button" },
+    { "name": "Card" }
+  ],
+  "globalCssPaths": ["tokens/colors.css", "styles.css"],
+  "cards": [{ "name": "Core - Button · Card", "path": "preview/core.card.html" }],
+  "templates": []
+}
