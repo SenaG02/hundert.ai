@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hundert AI - Operação de marketing, mídia e IA</title>
+<script src="./support.js"></script>
+</head>
+<!--
+  ATENCAO - CONTEUDO DE PREENCHIMENTO
+
+  Todo texto entre colchetes e todo elemento com data-placeholder e material de
+  diagramacao, nao conteudo real. Substituir antes de publicar:
+
+    · metricas do bloco de autoridade
+    · nome, cargo, empresa e citacao de cada depoimento
+    · o card de retrato do bloco claro
+    · logos de parceiro e certificacoes
+    · CNPJ e links legais do rodape
+    · o endpoint do formulario, que hoje nao envia nada
+
+  Depoimento e metrica sem origem verificavel nao devem ir ao ar. Isso nao e
+  detalhe de design: e a diferenca entre prova e alegacao.
+-->
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="./tokens.css">
+  <link rel="stylesheet" href="./components.css">
+  <style>
+    /* Somente o que e especifico desta pagina. Componentes: components.css */
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);
+      padding-block:var(--space-6);}
+    .brand{display:inline-flex;align-items:center;gap:var(--space-3);text-decoration:none;
+      color:var(--fg-on-dark);font-family:var(--font-display);font-size:var(--text-xl);
+      font-weight:var(--weight-bold);letter-spacing:var(--tracking-display);}
+    .brand__mark{display:grid;place-items:center;inline-size:var(--space-8);block-size:var(--space-8);
+      border-radius:var(--radius-field);background:var(--accent-brand-core);color:var(--fg-on-dark);
+      font-family:var(--font-mono);font-size:var(--text-base);flex:none;}
+    .nav__links{display:flex;flex-wrap:wrap;gap:var(--space-8);}
+    .nav__links a{color:var(--fg-on-dark);text-decoration:none;font-size:var(--text-base);
+      transition:color var(--dur-normal) var(--ease-standard);}
+    .nav__links a:hover{color:var(--accent-brand);}
+
+    .hero{display:grid;gap:var(--space-16);align-items:center;
+      grid-template-columns:minmax(0,1.15fr) minmax(min(100%,var(--track-card)),0.85fr);
+      padding-block:var(--space-16) var(--space-24);}
+
+    /* Brilho radial de marca. Fundo, nunca texto. */
+    .glow{position:relative;isolation:isolate;overflow:hidden;}
+    .glow::before{content:"";position:absolute;inset-block-start:50%;inset-inline-end:0;
+      inline-size:var(--space-40);block-size:var(--space-40);transform:translate(30%,-50%);
+      background:radial-gradient(circle,var(--accent-brand-glow),transparent 70%);
+      z-index:-1;pointer-events:none;}
+
+    .portrait{position:relative;border-radius:var(--radius-card-lg);
+      background:linear-gradient(150deg,var(--accent-brand-core),var(--quote-to));
+      padding:var(--space-8);min-block-size:var(--space-40);display:flex;flex-direction:column;
+      justify-content:flex-end;gap:var(--space-4);color:var(--fg-on-dark);
+      clip-path:polygon(0 0,100% 0,100% 82%,88% 100%,0 100%);}
+    .portrait__vertical{position:absolute;top:var(--space-8);left:var(--space-8);
+      /* Propriedade fisica de proposito: com writing-mode vertical, inset-inline-start
+         resolve contra o eixo do proprio elemento e joga o rotulo para o outro lado. */
+      writing-mode:vertical-rl;font-family:var(--font-display);font-size:var(--text-3xl);
+      font-weight:var(--weight-bold);letter-spacing:var(--tracking-display);
+      color:var(--on-action-veil);}
+    .portrait__label{font-size:var(--text-xs);letter-spacing:var(--tracking-eyebrow);
+      text-transform:uppercase;}
+    .portrait hr{border:0;border-top:var(--hairline) solid var(--on-quote-rule);inline-size:100%;}
+
+    /* Faixa horizontal que sangra na borda: sinaliza continuacao sem seta. */
+    .scroller{display:flex;gap:var(--space-6);overflow-x:auto;scroll-snap-type:x mandatory;
+      padding-block-end:var(--space-4);-webkit-overflow-scrolling:touch;}
+    .scroller>*{flex:0 0 auto;inline-size:min(85vw,var(--track-card));scroll-snap-align:start;}
+
+    .showcase{background:var(--bg-inverse);color:var(--fg-on-light);
+      border-radius:var(--radius-card-lg);padding:var(--space-12);
+      display:grid;gap:var(--space-8);align-items:center;
+      grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--track-card-sm)),1fr));}
+    .showcase__title{font-family:var(--font-display);font-size:var(--text-3xl);
+      line-height:var(--leading-display);letter-spacing:var(--tracking-display);
+      font-weight:var(--weight-semibold);}
+    .showcase__title span{color:var(--accent-brand-deep);}
+    .bubbles{display:flex;flex-wrap:wrap;gap:var(--space-4);justify-content:center;}
+    .bubble{display:grid;place-items:center;inline-size:var(--space-24);block-size:var(--space-24);
+      border-radius:var(--radius-pill);background:var(--bg-inverse);box-shadow:var(--shadow-bubble);
+      font-weight:var(--weight-bold);font-size:var(--text-sm);color:var(--fg-on-light-muted);
+      text-align:center;padding:var(--space-2);}
+
+    .constellation{inline-size:100%;block-size:auto;}
+    .constellation .node{fill:var(--bg-elevated-2);stroke:var(--border-dark);}
+    .constellation .link{stroke:var(--border-dark);}
+    .constellation .core{fill:var(--bg-inverse);}
+    .constellation text{fill:var(--fg-on-dark-muted);font-family:var(--font-mono);font-size:var(--text-xs);}
+    .constellation .core-label{fill:var(--accent-brand-core);font-family:var(--font-display);
+      font-weight:var(--weight-bold);}
+
+    .footer{border-top:var(--hairline) solid var(--border-dark);padding-block:var(--space-12);
+      display:flex;flex-direction:column;gap:var(--space-8);}
+    .footer__top{display:flex;flex-wrap:wrap;gap:var(--space-6);
+      align-items:center;justify-content:space-between;}
+    .footer__legal{display:flex;flex-wrap:wrap;gap:var(--space-6);font-size:var(--text-sm);
+      color:var(--fg-on-dark-muted);}
+    .footer__legal a{color:var(--accent-brand);}
+    .formnote{font-size:var(--text-sm);color:var(--fg-on-light);background:var(--surface-field);
+      border-radius:var(--radius-field);padding:var(--space-3) var(--space-4);}
+    .formnote[hidden]{display:none;}
+
+    /* Media query e o unico ponto do CSS onde var() nao e permitido pela linguagem. */
+    @media (max-width:60rem){
+      .hero{grid-template-columns:minmax(0,1fr);gap:var(--space-12);
+        padding-block:var(--space-8) var(--space-16);}
+      .nav{flex-direction:column;align-items:flex-start;gap:var(--space-4);}
+      .nav__links{gap:var(--space-6);}
+      .showcase{padding:var(--space-8);}
+      .portrait__vertical{font-size:var(--text-xl);}
+    }
+  </style>
+</helmet>
+
+<div class="hds">
+
+  <!-- ═══ 1. Nav ═══ -->
+  <div class="wrap">
+    <nav class="nav" aria-label="Principal">
+      <a class="brand" href="#topo"><span class="brand__mark" aria-hidden="true">H</span>Hundert AI</a>
+      <div class="nav__links">
+        <a href="#resultados">Resultados</a>
+        <a href="#servicos">O que fazemos</a>
+        <a href="#ia">IA aplicada</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ═══ 2. Hero ═══ -->
+  <header class="wrap hero" id="topo">
+    <div class="stack">
+      <span class="eyebrow">Para operações que já faturam e precisam escalar</span>
+      <h1 class="display">Marketing, mídia<br>e IA operando<br><span class="accent">como uma máquina.</span></h1>
+      <p class="lead">Agende um diagnóstico gratuito e veja onde sua operação perde receita hoje:
+        no tráfego, no criativo, no comercial ou no processo que ninguém automatizou.</p>
+      <ul class="checks">
+        <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Mídia e comercial medidos pelo mesmo número: receita</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>IA aplicada à operação, não à apresentação</span></li>
+        <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Time sênior dedicado, sem você montar equipe interna</span></li>
+      </ul>
+      <div class="stack-sm">
+        <span class="note">Certificações</span>
+        <div class="partners" data-placeholder>
+          <span>[Parceiro 1]</span><span>[Parceiro 2]</span><span>[Parceiro 3]</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="formcard" id="diagnostico" novalidate>
+      <div class="field"><label for="lp-nome">Nome e sobrenome</label>
+        <input id="lp-nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos te chamar?" required></div>
+      <div class="field"><label for="lp-email">E-mail corporativo</label>
+        <input id="lp-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required></div>
+      <div class="field"><label for="lp-empresa">Empresa</label>
+        <input id="lp-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
+      <div class="field"><label for="lp-tel">Telefone</label>
+        <input id="lp-tel" name="telefone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000" required></div>
+      <div class="field"><label for="lp-fat">Faturamento mensal</label>
+        <select id="lp-fat" name="faturamento" required>
+          <option value="">Selecione</option>
+          <option>Até R$ 100 mil</option>
+          <option>R$ 100 mil a R$ 500 mil</option>
+          <option>R$ 500 mil a R$ 2 mi</option>
+          <option>Acima de R$ 2 mi</option>
+        </select></div>
+      <div class="field"><label for="lp-seg">Segmento</label>
+        <select id="lp-seg" name="segmento" required>
+          <option value="">Selecione</option>
+          <option>E-commerce</option><option>Serviços B2B</option>
+          <option>Indústria</option><option>Saúde</option><option>Outro</option>
+        </select></div>
+      <button type="submit" class="cta cta--block">Falar com especialista</button>
+      <p class="formnote" id="lp-formnote" hidden role="status"></p>
+    </form>
+  </header>
+
+  <!-- ═══ 3 e 4. Painel claro: autoridade e prova ═══ -->
+  <div class="panel">
+    <section class="wrap sec stack reveal">
+      <div class="grid g2">
+        <div class="stack">
+          <h2 class="h2">Quem senta na mesa<br><span class="accent">com a sua operação.</span></h2>
+          <p class="lead">Trazemos para dentro do seu negócio o repertório de quem já rodou esse
+            problema dezenas de vezes. Não é consultoria que entrega relatório: é gente executando
+            junto, com a sua meta na frente.</p>
+          <a class="cta" href="#diagnostico">Solicite seu diagnóstico
+            <span class="cta__arrow" aria-hidden="true">&#8594;</span></a>
+        </div>
+        <figure class="portrait" data-placeholder>
+          <span class="portrait__vertical" aria-hidden="true">[Nome]</span>
+          <span class="portrait__label">Liderança</span>
+          <hr>
+          <figcaption><strong>[Nome do líder]</strong><br>[Cargo] · [Credencial verificável]</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wrap sec stack reveal" id="resultados">
+      <div class="stack-sm">
+        <h2 class="h2">As operações que mais crescem<br><span class="accent">têm o mesmo hábito.</span></h2>
+        <p class="lead">Medir tudo e cortar rápido o que não paga. Estes são clientes que fizeram isso
+          com a gente.</p>
+      </div>
+      <div class="scroller" data-placeholder>
+        <figure class="quote">
+          <div class="quote__stars" role="img" aria-label="Avaliação 5 de 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="quote__rating">5,0</span></div>
+          <span class="quote__title">[Resultado principal]</span><hr>
+          <p>"[Citação do cliente, na voz dele, com o número que importa no meio da frase.]"</p>
+          <figcaption><span class="avatar" aria-hidden="true">AB</span>
+            <span><strong>[Nome]</strong><br>[Cargo] · [Empresa]</span></figcaption>
+        </figure>
+        <figure class="quote">
+          <div class="quote__stars" role="img" aria-label="Avaliação 5 de 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="quote__rating">5,0</span></div>
+          <span class="quote__title">[Resultado principal]</span><hr>
+          <p>"[Citação do cliente. Prefira a frase falada à frase revisada: soa como gente.]"</p>
+          <figcaption><span class="avatar" aria-hidden="true">CD</span>
+            <span><strong>[Nome]</strong><br>[Cargo] · [Empresa]</span></figcaption>
+        </figure>
+        <figure class="quote">
+          <div class="quote__stars" role="img" aria-label="Avaliação 5 de 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span><span class="quote__rating">5,0</span></div>
+          <span class="quote__title">[Resultado principal]</span><hr>
+          <p>"[Citação do cliente, curta o bastante para caber em quatro linhas.]"</p>
+          <figcaption><span class="avatar" aria-hidden="true">EF</span>
+            <span><strong>[Nome]</strong><br>[Cargo] · [Empresa]</span></figcaption>
+        </figure>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ 5. Métricas ═══ -->
+  <section class="wrap sec stack reveal glow">
+    <div class="stack-sm">
+      <h2 class="h2">Operação inteira,<br><span class="accent">um número só na mesa.</span></h2>
+      <p class="lead">Mídia, criativo, dados e comercial respondendo à mesma meta.</p>
+    </div>
+    <div class="scroller" data-placeholder>
+      <div class="metric metric--lead"><b>[R$ 0]</b><span>Receita gerada para clientes</span></div>
+      <div class="metric"><b>[00]</b><span>Especialistas dedicados</span></div>
+      <div class="metric"><b>[000]</b><span>Operações atendidas</span></div>
+      <div class="metric"><b>[00]</b><span>Setores em que já rodamos</span></div>
+    </div>
+    <div class="row"><a class="cta" href="#diagnostico">Agendar diagnóstico
+      <span class="cta__arrow" aria-hidden="true">&#8594;</span></a></div>
+  </section>
+
+  <!-- ═══ 6. Serviços ═══ -->
+  <section class="wrap sec stack reveal" id="servicos">
+    <div class="stack-sm">
+      <h2 class="h2">Uma operação completa de marketing<br><span class="accent">sem contratar e gerenciar gente.</span></h2>
+      <p class="lead">Atendemos toda demanda que aparece no marketing. Alguns dos nossos serviços:</p>
+    </div>
+
+    <div class="pills" role="tablist" aria-label="Serviços">
+      <button type="button" class="pill" role="tab" id="s1" aria-controls="sp1" aria-selected="true">Tráfego pago</button>
+      <button type="button" class="pill" role="tab" id="s2" aria-controls="sp2" aria-selected="false">Criativos e LPs</button>
+      <button type="button" class="pill" role="tab" id="s3" aria-controls="sp3" aria-selected="false">Dashboards e dados</button>
+      <button type="button" class="pill" role="tab" id="s4" aria-controls="sp4" aria-selected="false">Consultoria comercial</button>
+    </div>
+
+    <div role="tabpanel" id="sp1" aria-labelledby="s1">
+      <div class="showcase">
+        <span class="showcase__title">Tráfego<br><span>Pago</span></span>
+        <div class="bubbles" data-placeholder>
+          <span class="bubble">Google</span><span class="bubble">Meta</span>
+          <span class="bubble">TikTok</span><span class="bubble">LinkedIn</span>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-block-start:var(--space-8)">
+        <h3 class="h3">Gestão profissional nos maiores canais de aquisição.</h3>
+        <p class="lead">Alta performance com foco obsessivo em retorno. Atraímos o público
+          qualificado para que cada centavo investido volte como receita no seu caixa.</p>
+      </div>
+    </div>
+    <div role="tabpanel" id="sp2" aria-labelledby="s2" hidden>
+      <div class="showcase">
+        <span class="showcase__title">Criativos<br><span>e LPs</span></span>
+        <div class="bubbles" data-placeholder>
+          <span class="bubble">Vídeo</span><span class="bubble">Estático</span>
+          <span class="bubble">UGC</span><span class="bubble">Landing</span>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-block-start:var(--space-8)">
+        <h3 class="h3">O criativo é a maior alavanca de performance que existe.</h3>
+        <p class="lead">Produção em volume, testada contra hipótese e não contra gosto. A landing
+          entra no mesmo ciclo: cada variação existe para responder uma pergunta.</p>
+      </div>
+    </div>
+    <div role="tabpanel" id="sp3" aria-labelledby="s3" hidden>
+      <div class="showcase">
+        <span class="showcase__title">Dashboards<br><span>e dados</span></span>
+        <div class="bubbles" data-placeholder>
+          <span class="bubble">CRM</span><span class="bubble">BI</span>
+          <span class="bubble">Atribuição</span><span class="bubble">Coorte</span>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-block-start:var(--space-8)">
+        <h3 class="h3">Painel que mostra o número que decide, não o que impressiona.</h3>
+        <p class="lead">Do clique ao caixa, com atribuição honesta. Se um canal não paga, o painel
+          diz isso antes do fim do mês.</p>
+      </div>
+    </div>
+    <div role="tabpanel" id="sp4" aria-labelledby="s4" hidden>
+      <div class="showcase">
+        <span class="showcase__title">Consultoria<br><span>comercial</span></span>
+        <div class="bubbles" data-placeholder>
+          <span class="bubble">Funil</span><span class="bubble">Script</span>
+          <span class="bubble">Cadência</span><span class="bubble">Playbook</span>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-block-start:var(--space-8)">
+        <h3 class="h3">Lead bom morre em comercial ruim.</h3>
+        <p class="lead">Estruturamos funil, cadência e script junto do seu time, para que o
+          investimento em mídia chegue inteiro na conversa de venda.</p>
+      </div>
+    </div>
+
+    <div class="row"><a class="cta" href="#diagnostico">Falar com um consultor
+      <span class="cta__arrow" aria-hidden="true">&#8594;</span></a></div>
+  </section>
+
+  <!-- ═══ 7. IA aplicada ═══ -->
+  <section class="wrap sec reveal glow" id="ia">
+    <div class="grid g2" style="align-items:center">
+      <div class="stack">
+        <h2 class="h2">Inteligência artificial<br><span class="accent">aplicada à operação.</span></h2>
+        <p class="lead">Fazemos a curadoria e a implantação da tecnologia certa para o seu negócio,
+          enquanto você foca no lucro.</p>
+        <ul class="checks">
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Automação dos processos operacionais que consomem seu time</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Análise contínua de dados para otimizar conversão e margem</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Implantação rápida, medida pelo mesmo indicador do resto</span></li>
+        </ul>
+        <a class="cta" href="#diagnostico">Saber mais
+          <span class="cta__arrow" aria-hidden="true">&#8594;</span></a>
+      </div>
+
+      <svg class="constellation" viewBox="0 0 400 340" role="img"
+           aria-label="Ferramentas de IA integradas ao núcleo da operação">
+        <g class="link" stroke-width="1">
+          <line x1="200" y1="170" x2="90"  y2="70"/><line x1="200" y1="170" x2="310" y2="70"/>
+          <line x1="200" y1="170" x2="60"  y2="200"/><line x1="200" y1="170" x2="340" y2="200"/>
+          <line x1="200" y1="170" x2="120" y2="290"/><line x1="200" y1="170" x2="280" y2="290"/>
+          <line x1="200" y1="170" x2="200" y2="30"/>
+        </g>
+        <g class="node" stroke-width="1">
+          <circle cx="90"  cy="70"  r="34"/><circle cx="310" cy="70"  r="34"/>
+          <circle cx="60"  cy="200" r="30"/><circle cx="340" cy="200" r="30"/>
+          <circle cx="120" cy="290" r="30"/><circle cx="280" cy="290" r="30"/>
+          <circle cx="200" cy="30"  r="26"/>
+        </g>
+        <g text-anchor="middle" dominant-baseline="middle">
+          <text x="90"  y="70">LLM</text><text x="310" y="70">Agentes</text>
+          <text x="60"  y="200">RPA</text><text x="340" y="200">Voz</text>
+          <text x="120" y="290">CRM</text><text x="280" y="290">BI</text>
+          <text x="200" y="30">API</text>
+        </g>
+        <circle class="core" cx="200" cy="170" r="52"/>
+        <text class="core-label" x="200" y="170" text-anchor="middle" dominant-baseline="middle"
+              font-size="28">H</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ═══ 8. FAQ e rodapé ═══ -->
+  <section class="wrap sec stack reveal" id="faq">
+    <h2 class="h2">Tire suas dúvidas<br><span class="accent">antes de começar.</span></h2>
+    <div class="faq">
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="q1"><i aria-hidden="true">+</i>Para qual tamanho de empresa a Hundert é indicada?</button>
+        <div class="faq__body" id="q1" hidden>Para operações que já faturam de forma consistente e
+          precisam escalar com previsibilidade. Se a oferta ainda está sendo validada, o dinheiro
+          rende mais em validação do que em mídia.</div>
+      </div>
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="q2"><i aria-hidden="true">+</i>Já tenho equipe de marketing interna. Por que contratar?</button>
+        <div class="faq__body" id="q2" hidden>Porque time interno executa com profundidade e
+          assessoria traz repertório de fora: o que já funcionou em dezenas de operações parecidas
+          com a sua. Os dois juntos rendem mais do que qualquer um sozinho.</div>
+      </div>
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="q3"><i aria-hidden="true">+</i>Quanto tempo leva para o resultado aparecer?</button>
+        <div class="faq__body" id="q3" hidden>Os primeiros sinais de leitura aparecem nas primeiras
+          semanas, porque começam a existir dados confiáveis. Resultado de receita depende do seu
+          ciclo de venda, e a gente combina esse prazo antes de assinar, não depois.</div>
+      </div>
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="q4"><i aria-hidden="true">+</i>Vocês garantem resultado de vendas?</button>
+        <div class="faq__body" id="q4" hidden>Ninguém honesto garante venda, porque preço, produto e
+          atendimento também decidem. O que garantimos é método, ritmo de teste e transparência
+          total do número, inclusive quando ele é ruim.</div>
+      </div>
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="q5"><i aria-hidden="true">+</i>Como a IA entra na prática?</button>
+        <div class="faq__body" id="q5" hidden>Entra onde existe trabalho repetitivo com regra clara:
+          triagem de lead, resposta de primeiro contato, consolidação de relatório, análise de
+          criativo. Nunca entra onde a decisão precisa de contexto que só gente tem.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="wrap footer">
+    <div class="footer__top">
+      <a class="brand" href="#topo"><span class="brand__mark" aria-hidden="true">H</span>Hundert AI</a>
+      <a class="linkarrow" href="#topo">Retornar ao topo</a>
+    </div>
+    <div class="footer__legal" data-placeholder>
+      <span>2026 &copy; Hundert AI. Todos os direitos reservados. CNPJ [00.000.000/0000-00].</span>
+      <a href="#faq">Política de privacidade</a>
+      <a href="#diagnostico">Fale conosco</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.currentScript.closest('x-dc') || document;
+
+  var tabs = [].slice.call(root.querySelectorAll('[role="tab"]'));
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      var panel = root.querySelector('#' + t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !on;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+    tab.addEventListener('click', function () { select(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var next = tabs[(i + d + tabs.length) % tabs.length];
+      select(next); next.focus();
+    });
+  });
+
+  [].forEach.call(root.querySelectorAll('.faq__btn'), function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.querySelector('i').textContent = open ? '+' : '−';
+      var body = root.querySelector('#' + btn.getAttribute('aria-controls'));
+      if (body) body.hidden = open;
+    });
+  });
+
+  // O formulario ainda nao tem destino. Ele diz isso em vez de fingir que enviou.
+  var form = root.querySelector('#diagnostico');
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var note = root.querySelector('#lp-formnote');
+    if (!note) return;
+    note.textContent = 'Maquete de design: este formulario ainda nao esta conectado a um destino.';
+    note.hidden = false;
+  });
+
+  var reveals = [].slice.call(root.querySelectorAll('.reveal'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</x-dc>
+</body>
+</html>

@@ -107,6 +107,9 @@
   --gutter-mobile:  var(--space-6);
   --gutter-desktop: var(--space-16);
   --measure:        65ch;   /* [I] limite de linha do corpo */
+  --track-card:     22rem;  /* 352px [D] largura de card em faixa e grade de duas colunas:
+                               o menor bloco que ainda comporta 4 linhas de citacao sem viuva */
+  --track-card-sm:  16rem;  /* 256px [D] card de metrica: numero mono + duas linhas de rotulo */
 
   /* ── Forma ───────────────────────────────────────────────────────────── */
   --radius-field:   10px;  /* [E-vis] campo de formulario */

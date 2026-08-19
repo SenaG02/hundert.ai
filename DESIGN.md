@@ -5,6 +5,10 @@ status: aguardando aprovacao
 reference: LP V4 Company "go-modular-b"
 evidence: research/v4-go-modular-b/OBSERVATIONS.md
 tokens: tokens.css
+components: components.css
+surfaces:
+  - design-system.dc.html
+  - landing.dc.html
 marks:
   E-vis: observado nos screenshots da referencia; estrutura confiavel, valor numerico aproximado
   D: derivado por calculo a partir de [E-vis], com a conta declarada
@@ -36,6 +40,8 @@ typography:
   tracking-display: "-0.02em [E-vis]"
 space:
   base: "8 [D]"
+  track-card: "352px [D]"
+  track-card-sm: "256px [D]"
   section-desktop: "160px [E-vis]"
   container: "1280px [E-vis]"
 radius:
@@ -273,7 +279,7 @@ texto escuro. Meia inversao vira sujeira.
 
 ## 6. Padroes reutilizaveis
 
-Inventario observado, na ordem da pagina:
+Todos implementados em `components.css` e em uso nas duas superficies. Inventario na ordem da pagina:
 
 | Padrao | Composicao |
 |---|---|
@@ -347,7 +353,14 @@ borda de campo. O sistema e reconhecivelmente da mesma familia da referencia, co
 par a par, escala tipografica, regua de espaco, raios, movimento e todos os componentes. A analise
 de pixel do proprio render confirma a disciplina de acento: o verde ocupa 0,66% da pagina.
 
-**Proximo passo.** A primeira superficie de verdade, no mesmo formato da referencia.
+**Primeira superficie.** `landing.dc.html` esta escrita e verificada em render: as oito secoes da
+referencia na ordem original, com conteudo da Hundert. Cinco CTAs, um por secao, todos verdes.
+Zero overflow horizontal em 1440 e 390.
+
+**Camada de componentes.** `components.css` guarda base, tipografia de papel e todos os componentes.
+Vitrine e landing consomem o mesmo arquivo, entao um ajuste de botao vale nas duas na mesma hora.
+
+**Proximo passo.** Conectar o formulario a um destino real e trocar o conteudo de preenchimento.
 
 ---
 
