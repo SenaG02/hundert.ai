@@ -58,6 +58,8 @@
   --quote-to:           #B32A1C; /* [D] 6.43:1 com branco. O coral observado (~#F2594A)
                                     dava 3.33:1 e reprovava para corpo */
   --star:               #F5B400; /* [E-vis] decorativo. Exige nota textual ao lado */
+  --on-action-veil:     rgb(255 255 255 / 0.18); /* [I] disco da seta dentro do CTA */
+  --on-quote-rule:      rgb(255 255 255 / 0.35); /* [I] regua dentro do card de citacao */
 
   /* ── Tipografia ──────────────────────────────────────────────────────── */
   --font-display: "Aeonik", "Inter Tight", system-ui, -apple-system, sans-serif; /* [I] */
@@ -74,6 +76,8 @@
   --text-2xl:  2rem;      /* 32px [D] h2 em telas medias */
   --text-3xl:  2.75rem;   /* 44px [E-vis] h2 desktop */
   --text-4xl:  4rem;      /* 64px [E-vis] h1 desktop */
+  --text-display-sm: 2.5rem; /* 40px [D] display no mobile: 64 * 0.625, o degrau que mantem
+                                4 linhas de titulo sem quebrar palavra em 390px */
 
   --leading-display: 1.05; /* [E-vis] o H1 de 4 linhas quase se toca */
   --leading-heading: 1.15; /* [E-vis] */
@@ -110,6 +114,7 @@
   --radius-card-lg: 24px;  /* [E-vis] card do formulario, card branco de servico */
   --radius-panel:   56px;  /* [E-vis] canto do painel claro contra o escuro */
   --radius-pill:    999px; /* [E-vis] CTA e pill de aba */
+  --hairline:       1px;   /* [I] espessura unica de fio em todo o sistema */
 
   /* ── Elevacao. A referencia quase nao usa sombra no escuro: separa por cor ── */
   --shadow-bubble: 0 8px 24px rgba(0, 0, 0, 0.12);          /* [E-vis] bolha de logo no claro */

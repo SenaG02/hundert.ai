@@ -30,7 +30,8 @@ color:
 typography:
   font-display: "Aeonik, Inter Tight [I]"
   font-mono: "JetBrains Mono [E-vis]"
-  scale: "13 14 16 18 20 24 32 44 64 [E-vis + D]"
+  scale: "13 14 16 18 20 24 32 40 44 64 [E-vis + D]"
+  display-mobile: "40px [D] = 64 * 0.625"
   leading-display: "1.05 [E-vis]"
   tracking-display: "-0.02em [E-vis]"
 space:
@@ -184,6 +185,7 @@ em monoespacada. A quebra e semantica, nao estetica. Ela diz "isto e dado".
 | Papel | Tamanho | Entrelinha | Tracking | Peso |
 |---|---|---|---|---|
 | Display / H1 | `--text-4xl` 64px | 1.05 | -0.02em | 400-500 |
+| Display no mobile | `--text-display-sm` 40px | 1.05 | -0.02em | 400-500 |
 | H2 | `--text-3xl` 44px | 1.15 | -0.02em | 500-600 |
 | H3 | `--text-xl` 24px | 1.15 | 0 | 600 |
 | Corpo | `--text-md` 18px | 1.55 | 0 | 400 |
@@ -341,9 +343,12 @@ como merece, `[I]` estouraria: e a maior lacuna deste sistema.
 **O desvio.** Ficou: gramatica inteira. Mudou: quatro pares de cor por acessibilidade, e a
 borda de campo. O sistema e reconhecivelmente da mesma familia da referencia, como pedido.
 
-**Proximo passo.** Aprovacao. Depois dela, `design-system.dc.html` com paleta, escala, regua de
-espaco, botoes, campos e cards, tudo com `var(--*)` e zero valor solto.
+**Vitrine.** `design-system.dc.html` esta escrita e verificada em render real: paleta, contraste
+par a par, escala tipografica, regua de espaco, raios, movimento e todos os componentes. A analise
+de pixel do proprio render confirma a disciplina de acento: o verde ocupa 0,66% da pagina.
+
+**Proximo passo.** A primeira superficie de verdade, no mesmo formato da referencia.
 
 ---
 
-**Este sistema aguarda sua aprovacao. Nada sera desenhado antes dela.**
+**Aprovado em 2026-08-19. A vitrine viva esta em `design-system.dc.html`.**

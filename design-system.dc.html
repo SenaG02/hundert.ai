@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hundert AI - Sistema de Design</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="./tokens.css">
+  <style>
+    /* Vitrine do sistema. Toda cor, espaco, tipo, raio e tempo vem de tokens.css.
+       Nenhum valor literal abaixo, exceto 0, 100%, 1fr e fracoes de layout. */
+    *,*::before,*::after{box-sizing:border-box;}
+    .hds{background:var(--bg-base);color:var(--fg-on-dark);font-family:var(--font-text);
+      font-size:var(--text-md);line-height:var(--leading-body);-webkit-font-smoothing:antialiased;}
+    .hds :focus-visible{outline:var(--space-1) solid var(--accent-brand);outline-offset:var(--space-1);border-radius:var(--radius-field);}
+    .wrap{max-width:var(--container);margin:0 auto;padding-inline:var(--gutter-desktop);}
+    .sec{padding-block:var(--space-24);}
+    .sec+.sec{border-top:var(--hairline) solid var(--border-dark);}
+
+    h1,h2,h3,h4,p,ul,ol,figure{margin:0;}
+    ul{list-style:none;padding:0;}
+    .eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);font-size:var(--text-xs);
+      font-weight:var(--weight-bold);letter-spacing:var(--tracking-eyebrow);text-transform:uppercase;color:var(--fg-on-dark);}
+    .eyebrow::before{content:"";inline-size:var(--space-2);block-size:var(--space-2);
+      border-radius:var(--radius-pill);background:var(--accent-brand-core);flex:none;}
+    .display{font-family:var(--font-display);font-size:var(--text-4xl);line-height:var(--leading-display);
+      letter-spacing:var(--tracking-display);font-weight:var(--weight-medium);}
+    .h2{font-family:var(--font-display);font-size:var(--text-3xl);line-height:var(--leading-heading);
+      letter-spacing:var(--tracking-display);font-weight:var(--weight-semibold);}
+    .h3{font-size:var(--text-xl);line-height:var(--leading-heading);font-weight:var(--weight-semibold);}
+    .accent{color:var(--accent-brand);}
+    .lead{color:var(--fg-on-dark-muted);max-width:var(--measure);}
+    .mono{font-family:var(--font-mono);font-size:var(--text-sm);}
+    .mark{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--fg-on-dark-muted);
+      border:var(--hairline) solid var(--border-dark);border-radius:var(--radius-field);
+      padding:0 var(--space-2);max-inline-size:100%;}
+
+    .stack{display:flex;flex-direction:column;gap:var(--space-8);}
+    .stack-sm{display:flex;flex-direction:column;gap:var(--space-4);}
+    .row{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:center;}
+    .grid{display:grid;gap:var(--space-6);}
+    .g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--space-40)),1fr));}
+    .g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--space-32)),1fr));}
+
+    /* ── Componentes do sistema ───────────────────────────────────────── */
+    .cta{display:inline-flex;align-items:center;gap:var(--space-3);border:0;cursor:pointer;
+      background:var(--action);color:var(--fg-on-dark);font-family:inherit;
+      font-size:var(--text-md);font-weight:var(--weight-bold);
+      padding:var(--space-4) var(--space-8);border-radius:var(--radius-pill);
+      box-shadow:var(--shadow-cta);transition:background var(--dur-normal) var(--ease-standard),
+      transform var(--dur-normal) var(--ease-out),box-shadow var(--dur-normal) var(--ease-out);}
+    .cta:hover{background:var(--action-hover);transform:translateY(calc(var(--space-1) * -0.5));
+      box-shadow:0 0 var(--space-12) var(--action-glow);}
+    .cta__arrow{display:grid;place-items:center;inline-size:var(--space-6);block-size:var(--space-6);
+      border-radius:var(--radius-pill);background:var(--on-action-veil);flex:none;}
+    .cta--sm{background:var(--action-strong);font-size:var(--text-base);
+      padding:var(--space-3) var(--space-6);box-shadow:none;}
+    .cta--sm:hover{background:var(--action-strong);}
+    .linkarrow{display:inline-flex;align-items:center;gap:var(--space-2);color:var(--fg-on-dark);
+      text-decoration:none;font-weight:var(--weight-semibold);border-bottom:var(--hairline) solid var(--border-dark);
+      padding-bottom:var(--space-1);transition:border-color var(--dur-normal) var(--ease-standard);}
+    .linkarrow:hover{border-color:var(--accent-brand);}
+
+    .field{display:flex;flex-direction:column;gap:var(--space-2);}
+    .field label{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--fg-on-light);}
+    .field input,.field select{font-family:inherit;font-size:var(--text-md);color:var(--fg-on-light);
+      background:var(--surface-field);border:var(--hairline) solid var(--border-light);
+      border-radius:var(--radius-field);padding:var(--space-3) var(--space-4);inline-size:100%;
+      transition:border-color var(--dur-normal) var(--ease-standard);}
+    .field input::placeholder{color:var(--fg-on-form-muted);}
+    .field input:focus{border-color:var(--action-strong);outline:none;}
+
+    .formcard{background:var(--surface-form);border-radius:var(--radius-card-lg);
+      padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-4);}
+
+    .checks li{display:flex;gap:var(--space-3);align-items:flex-start;padding-block:var(--space-2);}
+    .checks svg{flex:none;color:var(--accent-brand-core);margin-block-start:var(--space-1);}
+
+    .metric{background:var(--bg-elevated);border:var(--hairline) solid var(--border-dark);
+      border-radius:var(--radius-card);padding:var(--space-8);text-align:center;}
+    .metric b{display:block;font-family:var(--font-mono);font-size:var(--text-3xl);
+      line-height:var(--leading-display);color:var(--accent-brand);font-weight:var(--weight-medium);}
+    .metric span{display:block;margin-block-start:var(--space-3);color:var(--fg-on-dark-muted);font-size:var(--text-base);}
+    .metric--lead{border-color:var(--border-dark-accent);}
+
+    .quote{background:linear-gradient(160deg,var(--quote-from),var(--quote-to));
+      border-radius:var(--radius-card);padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-4);}
+    .quote__stars{display:flex;gap:var(--space-1);align-items:center;color:var(--star);}
+    .quote__rating{font-size:var(--text-sm);color:var(--fg-on-dark);margin-inline-start:var(--space-2);}
+    .quote__title{font-size:var(--text-sm);font-weight:var(--weight-bold);text-transform:uppercase;
+      letter-spacing:var(--tracking-eyebrow);}
+    .quote hr{border:0;border-top:var(--hairline) solid var(--on-quote-rule);inline-size:100%;}
+    .quote p{font-size:var(--text-md);}
+    .quote figcaption{display:flex;gap:var(--space-3);align-items:center;font-size:var(--text-sm);}
+    .avatar{inline-size:var(--space-12);block-size:var(--space-12);border-radius:var(--radius-pill);
+      background:var(--quote-to);display:grid;place-items:center;font-weight:var(--weight-bold);flex:none;}
+
+    .pills{display:flex;flex-wrap:wrap;gap:var(--space-3);}
+    .pill{font-family:inherit;font-size:var(--text-base);cursor:pointer;
+      background:var(--bg-elevated);color:var(--fg-on-dark);
+      border:var(--hairline) solid var(--border-dark);border-radius:var(--radius-pill);
+      padding:var(--space-3) var(--space-6);transition:color var(--dur-normal) var(--ease-standard),
+      border-color var(--dur-normal) var(--ease-standard);}
+    .pill[aria-selected="true"]{color:var(--accent-brand);border-color:var(--accent-brand);
+      display:inline-flex;align-items:center;gap:var(--space-2);}
+    .pill[aria-selected="true"]::before{content:"";inline-size:var(--space-2);block-size:var(--space-2);
+      border-radius:var(--radius-pill);background:var(--accent-brand);}
+    .tabpanel{margin-block-start:var(--space-6);color:var(--fg-on-dark-muted);}
+    .tabpanel[hidden]{display:none;}
+
+    .faq{display:flex;flex-direction:column;gap:var(--space-3);}
+    .faq__row{background:var(--bg-elevated);border-radius:var(--radius-card);overflow:hidden;}
+    .faq__btn{inline-size:100%;text-align:start;cursor:pointer;font-family:inherit;
+      font-size:var(--text-md);color:var(--fg-on-dark);background:none;border:0;
+      padding:var(--space-6);display:flex;gap:var(--space-4);align-items:center;}
+    .faq__btn i{font-style:normal;color:var(--accent-brand);font-family:var(--font-mono);flex:none;}
+    .faq__body{padding:0 var(--space-6) var(--space-6) calc(var(--space-6) + var(--space-6));
+      color:var(--fg-on-dark-muted);}
+    .faq__body[hidden]{display:none;}
+
+    /* ── Painel claro: o gesto estrutural da referencia ────────────────── */
+    .panel{background:var(--bg-inverse);color:var(--fg-on-light);
+      border-start-start-radius:var(--radius-panel);border-end-end-radius:var(--radius-panel);}
+    .panel .lead{color:var(--fg-on-light-muted);}
+    .panel .h2,.panel .display{color:var(--fg-on-light);}
+    .panel .accent{color:var(--accent-brand-deep);}
+    .panel .mark{color:var(--fg-on-light-muted);border-color:var(--border-light);}
+    .panel .sec+.sec{border-top-color:var(--border-light);}
+
+    /* ── Blocos de espécime ───────────────────────────────────────────── */
+    .swatches{display:grid;gap:var(--space-4);grid-template-columns:repeat(auto-fill,minmax(min(100%,var(--space-40)),1fr));}
+    .swatch{border:var(--hairline) solid var(--border-dark);border-radius:var(--radius-card);overflow:hidden;}
+    .swatch__chip{block-size:var(--space-24);border-bottom:var(--hairline) solid var(--border-dark);}
+    .swatch__meta{padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);}
+    .swatch__name{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--fg-on-dark);}
+    .swatch__note{font-size:var(--text-sm);color:var(--fg-on-dark-muted);}
+
+    /* Conteudo largo rola dentro do proprio container. O corpo da pagina nunca rola na horizontal. */
+    .tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+    table{inline-size:100%;border-collapse:collapse;font-size:var(--text-base);
+      min-inline-size:var(--space-40);}
+    .tablewrap th,.tablewrap td{white-space:nowrap;}
+    .tablewrap td:first-child,.tablewrap th:first-child{white-space:normal;min-inline-size:var(--space-32);}
+    th,td{text-align:start;padding:var(--space-3) var(--space-4);
+      border-bottom:var(--hairline) solid var(--border-dark);}
+    th{font-size:var(--text-sm);text-transform:uppercase;letter-spacing:var(--tracking-eyebrow);
+      color:var(--fg-on-dark-muted);font-weight:var(--weight-bold);}
+    td.num{font-family:var(--font-mono);}
+    .pass{color:var(--action);font-weight:var(--weight-bold);}
+    .fail{color:var(--accent-brand);font-weight:var(--weight-bold);}
+
+    .typerow{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--space-2);
+      padding-block:var(--space-6);border-bottom:var(--hairline) solid var(--border-dark);}
+    .typerow__meta{display:flex;flex-wrap:wrap;gap:var(--space-3);align-items:center;
+      font-family:var(--font-mono);font-size:var(--text-xs);color:var(--fg-on-dark-muted);}
+
+    .ruler{display:flex;flex-direction:column;gap:var(--space-3);}
+    .ruler__row{display:flex;align-items:center;gap:var(--space-4);}
+    .ruler__bar{block-size:var(--space-3);background:var(--accent-brand);border-radius:var(--radius-field);}
+    .ruler__label{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--fg-on-dark-muted);
+      inline-size:var(--space-32);flex:none;}
+
+    .radii{display:flex;flex-wrap:wrap;gap:var(--space-6);}
+    .radii figure{display:flex;flex-direction:column;gap:var(--space-3);align-items:center;}
+    .radii div{inline-size:var(--space-24);block-size:var(--space-24);background:var(--bg-elevated);
+      border:var(--hairline) solid var(--border-dark);}
+
+    .rule{display:grid;gap:var(--space-6);grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--space-40)),1fr));}
+    .rule__card{border-radius:var(--radius-card);padding:var(--space-8);
+      border:var(--hairline) solid var(--border-dark);background:var(--bg-elevated);
+      display:flex;flex-direction:column;gap:var(--space-4);}
+    .rule__card h4{font-size:var(--text-base);text-transform:uppercase;
+      letter-spacing:var(--tracking-eyebrow);margin:0;}
+    .rule__ok h4{color:var(--action);}
+    .rule__no h4{color:var(--accent-brand);}
+    .badcta{display:inline-flex;align-items:center;gap:var(--space-3);
+      background:var(--accent-brand-core);color:var(--fg-on-dark);font-weight:var(--weight-bold);
+      padding:var(--space-4) var(--space-8);border-radius:var(--radius-pill);opacity:0.55;}
+
+    .spec{display:flex;flex-direction:column;gap:var(--space-4);align-items:flex-start;
+      padding:var(--space-6);border:var(--hairline) solid var(--border-dark);
+      border-radius:var(--radius-card);}
+    .partners{display:flex;flex-wrap:wrap;gap:var(--space-8);align-items:center;
+      color:var(--fg-on-dark-muted);font-weight:var(--weight-semibold);}
+
+    .gaps li{display:flex;gap:var(--space-4);padding-block:var(--space-3);
+      border-bottom:var(--hairline) solid var(--border-dark);}
+    .gaps b{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--accent-brand);flex:none;}
+
+    .reveal{opacity:0;transform:translateY(var(--space-6));
+      transition:opacity var(--dur-slow) var(--ease-out),transform var(--dur-slow) var(--ease-out);}
+    .reveal.is-in{opacity:1;transform:none;}
+
+    /* Media query e o unico ponto do CSS onde var() nao e permitido pela linguagem. */
+    @media (max-width:60rem){
+      .wrap{padding-inline:var(--gutter-mobile);}
+      .display{font-size:var(--text-display-sm);}
+      .h2{font-size:var(--text-xl);}
+      .sec{padding-block:var(--space-16);}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .reveal{opacity:1;transform:none;}
+      .cta:hover{transform:none;}
+    }
+  </style>
+</helmet>
+
+<div class="hds">
+
+  <!-- ═══ Abertura ═══ -->
+  <header class="wrap sec stack">
+    <span class="eyebrow">Sistema de design · v0.1.0 · aprovado</span>
+    <h1 class="display">Hundert AI.<br>Um sistema com<br><span class="accent">uma decisão por seção.</span></h1>
+    <p class="lead">Derivado da LP de referência por observação de 8 telas cheias. Nenhum valor
+      literal vive nesta página: tudo vem de <span class="mono">tokens.css</span>. Cada token carrega
+      a marca de como foi obtido.</p>
+    <div class="row">
+      <span class="mark">[E-vis] observado no render, número aproximado</span>
+      <span class="mark">[D] derivado, com a conta declarada</span>
+      <span class="mark">[I] decidido, com o motivo declarado</span>
+    </div>
+    <p class="lead"><strong>Não existe [E] neste sistema.</strong> [E] exigiria o dump de
+      <span class="mono">getComputedStyle</span>, que segue pendente. Confiança atual:
+      65% [E-vis] · 16% [D] · 19% [I].</p>
+  </header>
+
+  <!-- ═══ A regra do acento ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">A regra que sustenta o sistema</span>
+      <h2 class="h2">O vermelho nunca é o botão.<br><span class="accent">O verde nunca é decoração.</span></h2>
+      <p class="lead">Marca e ênfase usam vermelho dezenas de vezes por página, e por isso o vermelho
+        perde poder de convocação. Ação usa verde uma vez por seção, e por isso ainda manda. Inverter
+        destrói as duas cores de uma vez.</p>
+    </div>
+    <div class="rule">
+      <div class="rule__card rule__ok">
+        <h4>Faça</h4>
+        <ul class="checks stack-sm">
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ênfase de marca no texto, em <span class="accent">vermelho</span></span></li>
+        </ul>
+        <button type="button" class="cta">Falar com um especialista
+          <span class="cta__arrow" aria-hidden="true">&#8594;</span></button>
+        <p class="swatch__note">Um CTA verde, sozinho na seção. É o único elemento totalmente
+          arredondado, o que já sinaliza que ali se clica.</p>
+      </div>
+      <div class="rule__card rule__no">
+        <h4>Não faça</h4>
+        <p class="swatch__note">O mesmo botão em vermelho, no meio de vinte elementos vermelhos:</p>
+        <span class="badcta">Falar com um especialista
+          <span class="cta__arrow" aria-hidden="true">&#8594;</span></span>
+        <p class="swatch__note">Vira invisível. E ainda reprova em contraste: branco sobre o vermelho
+          de identidade dá 4.16:1, abaixo do mínimo de 4.5:1 para corpo.</p>
+      </div>
+    </div>
+    <p class="lead">Onde o acento <strong>nunca</strong> aparece: texto corrido, borda de campo,
+      fundo de seção inteira, e dentro do card de formulário. Essa ausência é o que dá peso à presença.</p>
+  </section>
+
+  <!-- ═══ Cor ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">Cor</span>
+      <h2 class="h2">Quatro superfícies, dois acentos<br><span class="accent">com funções que não se cruzam.</span></h2>
+    </div>
+    <div class="swatches">
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--bg-base)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--bg-base</span>
+        <span class="swatch__note">#0A0A0A · fundo da página <span class="mark">[E-vis]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--bg-elevated)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--bg-elevated</span>
+        <span class="swatch__note">#141414 · card e linha de FAQ <span class="mark">[E-vis]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--bg-inverse)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--bg-inverse</span>
+        <span class="swatch__note">#FFFFFF · painel claro <span class="mark">[E-vis]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--surface-form)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--surface-form</span>
+        <span class="swatch__note">#E9E9E9 · card do formulário <span class="mark">[E-vis]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--accent-brand)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--accent-brand</span>
+        <span class="swatch__note">#F0323F · ênfase em texto <span class="mark">[D]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--accent-brand-core)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--accent-brand-core</span>
+        <span class="swatch__note">#E11D2E · só forma e marca, nunca texto <span class="mark">[E-vis]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--action)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--action</span>
+        <span class="swatch__note">#16A34A · CTA com rótulo ≥ 18px bold <span class="mark">[D]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--action-strong)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--action-strong</span>
+        <span class="swatch__note">#15803D · obrigatório abaixo disso <span class="mark">[D]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:linear-gradient(160deg,var(--quote-from),var(--quote-to))"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--quote-from / --quote-to</span>
+        <span class="swatch__note">#D93B28 a #B32A1C · card de citação <span class="mark">[D]</span></span></figcaption></figure>
+      <figure class="swatch"><div class="swatch__chip" style="background:var(--fg-on-dark-muted)"></div>
+        <figcaption class="swatch__meta"><span class="swatch__name">--fg-on-dark-muted</span>
+        <span class="swatch__note">#A3A3A3 · corpo no escuro <span class="mark">[E-vis]</span></span></figcaption></figure>
+    </div>
+
+    <div class="stack-sm">
+      <h3 class="h3">Contraste medido, par a par</h3>
+      <p class="lead">Calculado com a fórmula WCAG 2.1. As quatro linhas marcadas em vermelho são
+        onde a referência reprova e este sistema diverge de propósito.</p>
+    </div>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Par</th><th>Razão</th><th>Corpo AA</th><th>Grande AA</th><th>Nota</th></tr></thead>
+      <tbody>
+        <tr><td>branco sobre <span class="mono">--bg-base</span></td><td class="num">19.80:1</td><td class="pass">passa</td><td class="pass">passa</td><td></td></tr>
+        <tr><td>cinza de corpo sobre <span class="mono">--bg-base</span></td><td class="num">7.85:1</td><td class="pass">passa</td><td class="pass">passa</td><td></td></tr>
+        <tr><td><span class="mono">--accent-brand</span> sobre base</td><td class="num">4.93:1</td><td class="pass">passa</td><td class="pass">passa</td><td>referência dava 4.16:1</td></tr>
+        <tr><td><span class="mono">--accent-brand</span> sobre elevated</td><td class="num">4.59:1</td><td class="pass">passa</td><td class="pass">passa</td><td>referência dava 3.87:1</td></tr>
+        <tr><td>branco sobre <span class="mono">--action</span></td><td class="num">3.30:1</td><td class="fail">reprova</td><td class="pass">passa</td><td>só rótulo ≥ 18px bold</td></tr>
+        <tr><td>branco sobre <span class="mono">--action-strong</span></td><td class="num">5.02:1</td><td class="pass">passa</td><td class="pass">passa</td><td>referência dava 2.28:1</td></tr>
+        <tr><td>branco sobre <span class="mono">--quote-from</span></td><td class="num">4.56:1</td><td class="pass">passa</td><td class="pass">passa</td><td>referência dava 3.33:1</td></tr>
+        <tr><td>texto sobre <span class="mono">--surface-form</span></td><td class="num">16.31:1</td><td class="pass">passa</td><td class="pass">passa</td><td></td></tr>
+        <tr><td>placeholder sobre campo</td><td class="num">5.54:1</td><td class="pass">passa</td><td class="pass">passa</td><td>referência dava 3.98:1</td></tr>
+      </tbody>
+    </table>
+      </div>
+  </section>
+
+  <!-- ═══ Tipografia ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">Tipografia</span>
+      <h2 class="h2">Uma família para tudo.<br><span class="accent">Uma única quebra: o dado.</span></h2>
+      <p class="lead">A troca para monoespaçada nos números é semântica, não estética. Ela diz
+        <em>isto é medição</em>. O nome da família é a maior incerteza do sistema
+        <span class="mark">[I]</span>  -  está renderizando em Inter Tight até o dump confirmar.</p>
+    </div>
+    <div>
+      <div class="typerow"><span class="display">Faça de 2026 o ano decisivo</span>
+        <span class="typerow__meta"><span>--text-4xl · 64px</span><span>entrelinha 1.05</span>
+        <span>tracking -0.02em</span><span class="mark">[E-vis]</span></span></div>
+      <div class="typerow"><span class="h2">Operação completa, sem contratar</span>
+        <span class="typerow__meta"><span>--text-3xl · 44px</span><span>entrelinha 1.15</span><span class="mark">[E-vis]</span></span></div>
+      <div class="typerow"><span class="h3">Gestão nos maiores canais</span>
+        <span class="typerow__meta"><span>--text-xl · 24px</span><span>peso 600</span><span class="mark">[E-vis]</span></span></div>
+      <div class="typerow"><span>Atendemos toda demanda que surge no marketing. Este é o corpo do
+        texto, em 18px com entrelinha 1.55, limitado a 65 caracteres por linha.</span>
+        <span class="typerow__meta"><span>--text-md · 18px</span><span>entrelinha 1.55</span><span class="mark">[E-vis]</span></span></div>
+      <div class="typerow"><span class="eyebrow">Para empresas que faturam acima de R$ 100 mil/mês</span>
+        <span class="typerow__meta"><span>--text-xs · 13px</span><span>tracking +0.12em</span>
+        <span>caixa alta</span><span class="mark">[E-vis]</span></span></div>
+      <div class="typerow"><span class="mono" style="font-size:var(--text-3xl);color:var(--accent-brand)">+R$ 16 Bi</span>
+        <span class="typerow__meta"><span>--font-mono · --text-3xl</span><span>a única quebra de família</span><span class="mark">[E-vis]</span></span></div>
+    </div>
+    <p class="lead">Entrelinha de display em 1.05 é a decisão mais radical daqui: o título vira um
+      bloco sólido, quase uma forma. Só funciona com tracking negativo e título curto. Acima de
+      três linhas, sobe para 1.15.</p>
+  </section>
+
+  <!-- ═══ Espaço, raio, elevação ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">Espaço, forma e plano</span>
+      <h2 class="h2">Base 8. Cinco raios.<br><span class="accent">Quase nenhuma sombra.</span></h2>
+    </div>
+    <div class="ruler">
+      <div class="ruler__row"><span class="ruler__label">--space-2 · 8px</span><span class="ruler__bar" style="inline-size:var(--space-2)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-4 · 16px</span><span class="ruler__bar" style="inline-size:var(--space-4)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-6 · 24px</span><span class="ruler__bar" style="inline-size:var(--space-6)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-8 · 32px</span><span class="ruler__bar" style="inline-size:var(--space-8)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-12 · 48px</span><span class="ruler__bar" style="inline-size:var(--space-12)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-16 · 64px</span><span class="ruler__bar" style="inline-size:var(--space-16)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-24 · 96px</span><span class="ruler__bar" style="inline-size:var(--space-24)"></span></div>
+      <div class="ruler__row"><span class="ruler__label">--space-40 · 160px</span><span class="ruler__bar" style="inline-size:var(--space-40)"></span></div>
+    </div>
+    <div class="radii">
+      <figure><div style="border-radius:var(--radius-field)"></div><figcaption class="swatch__note">--radius-field · campo</figcaption></figure>
+      <figure><div style="border-radius:var(--radius-card)"></div><figcaption class="swatch__note">--radius-card · card</figcaption></figure>
+      <figure><div style="border-radius:var(--radius-card-lg)"></div><figcaption class="swatch__note">--radius-card-lg · card grande</figcaption></figure>
+      <figure><div style="border-radius:var(--radius-panel)"></div><figcaption class="swatch__note">--radius-panel · painel</figcaption></figure>
+      <figure><div style="border-radius:var(--radius-pill)"></div><figcaption class="swatch__note">--radius-pill · só clicável</figcaption></figure>
+    </div>
+    <p class="lead">No escuro, o plano se separa por <strong>cor</strong>, não por sombra:
+      <span class="mono">--bg-elevated</span> sobre <span class="mono">--bg-base</span> já é a
+      elevação. Sombra existe em três lugares apenas, e o halo do CTA não é sombra: é marcação.</p>
+  </section>
+
+  <!-- ═══ Componentes ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">Componentes</span>
+      <h2 class="h2">Cada peça é um papel,<br><span class="accent">não uma aparência.</span></h2>
+      <p class="lead">O CTA primário não é "o botão verde": é o único ponto de decisão da seção, e
+        por isso é verde. Se dois precisarem coexistir, o segundo vira link com seta.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="spec">
+        <button type="button" class="cta">Solicite seu diagnóstico
+          <span class="cta__arrow" aria-hidden="true">&#8594;</span></button>
+        <p class="swatch__note"><strong>CTA primário.</strong> Um por seção, nunca dois.
+          <span class="mono">--action</span> a 3.30:1 com branco, válido porque o rótulo é
+          18px bold e conta como texto grande.</p>
+      </div>
+      <div class="spec">
+        <button type="button" class="cta cta--sm">Ação em superfície densa</button>
+        <p class="swatch__note"><strong>Nunca ao lado do primário.</strong> Existe para tabela,
+          painel e formulário, onde não há CTA de seção. Usa
+          <span class="mono">--action-strong</span> porque abaixo de 18px bold o rótulo deixa de
+          contar como texto grande e precisa de 4.5:1.</p>
+      </div>
+      <div class="spec">
+        <a class="linkarrow" href="#componentes">Ver todos os serviços &#8594;</a>
+        <p class="swatch__note"><strong>A segunda ação da seção.</strong> Quando dois caminhos
+          precisam coexistir, este é o segundo. Sem verde, sem pill: a hierarquia se mantém
+          porque só uma coisa na seção parece clicável.</p>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="formcard">
+        <div class="field"><label for="ds-nome">Nome e sobrenome</label>
+          <input id="ds-nome" type="text" placeholder="Como podemos te chamar?"></div>
+        <div class="field"><label for="ds-email">E-mail corporativo</label>
+          <input id="ds-email" type="email" placeholder="voce@empresa.com"></div>
+        <div class="field"><label for="ds-fat">Faturamento mensal</label>
+          <select id="ds-fat"><option>Até R$ 100 mil</option><option>R$ 100 mil a R$ 500 mil</option>
+          <option>Acima de R$ 500 mil</option></select></div>
+        <button type="button" class="cta" style="justify-content:center">Falar com especialista</button>
+      </div>
+
+      <div class="stack">
+        <ul class="checks">
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Marketing e comercial focados no seu ROI</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Tecnologia e I.A. aplicadas à sua operação</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 9.5l4 4 8-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Especialistas dedicados com soluções sob medida</span></li>
+        </ul>
+        <div class="stack-sm">
+          <span class="swatch__note">Faixa de parceiros</span>
+          <div class="partners"><span>Google Partner</span><span>Meta Business</span><span>TikTok for Business</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g3">
+      <div class="metric metric--lead"><b>+R$ 16 Bi</b><span>Receita gerada para nossos clientes</span></div>
+      <div class="metric"><b>+5 Mil</b><span>Especialistas certificados</span></div>
+      <div class="metric"><b>+30 Mil</b><span>Empresas atendidas</span></div>
+    </div>
+
+    <div class="pills" role="tablist" aria-label="Serviços">
+      <button type="button" class="pill" role="tab" id="t1" aria-controls="p1" aria-selected="true">Tráfego pago</button>
+      <button type="button" class="pill" role="tab" id="t2" aria-controls="p2" aria-selected="false">Dashboards e dados</button>
+      <button type="button" class="pill" role="tab" id="t3" aria-controls="p3" aria-selected="false">Soluções de IA</button>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="p1" aria-labelledby="t1">Gestão de alta performance com
+      foco obsessivo em retorno. Cada real investido volta como receita rastreável.</div>
+    <div class="tabpanel" role="tabpanel" id="p2" aria-labelledby="t2" hidden>Painéis que mostram o
+      número que decide, e não o número que impressiona.</div>
+    <div class="tabpanel" role="tabpanel" id="p3" aria-labelledby="t3" hidden>Curadoria e implantação
+      da tecnologia certa para a sua operação, enquanto você foca no lucro.</div>
+
+    <div class="faq">
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="f1"><i aria-hidden="true">+</i>Para qual tamanho de empresa a Hundert é indicada?</button>
+        <div class="faq__body" id="f1" hidden>Para operações que já faturam e precisam escalar com
+          previsibilidade, não para quem está validando a primeira oferta.</div>
+      </div>
+      <div class="faq__row">
+        <button type="button" class="faq__btn" aria-expanded="false" aria-controls="f2"><i aria-hidden="true">+</i>Já tenho equipe interna. Por que contratar?</button>
+        <div class="faq__body" id="f2" hidden>Porque a equipe interna executa e a assessoria traz
+          repertório de fora: o que já funcionou em dezenas de operações parecidas com a sua.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Painel claro: o gesto estrutural ═══ -->
+  <div class="panel">
+    <section class="wrap sec stack reveal">
+      <div class="stack-sm">
+        <span class="eyebrow">O painel claro</span>
+        <h2 class="h2">O bloco claro não é uma seção<br><span class="accent">com o fundo trocado.</span></h2>
+        <p class="lead">É um painel único com <span class="mono">--radius-panel</span> nos cantos que
+          encostam no escuro. Ele parece um cartão gigante deitado sobre a página. Esse detalhe é o
+          que separa a referência de um site que só alterna cor de fundo. Repare no canto superior
+          esquerdo e no inferior direito desta faixa.</p>
+      </div>
+      <div class="grid g2">
+        <figure class="quote">
+          <div class="quote__stars" role="img" aria-label="Avaliação 5 de 5">
+            <span aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+            <span class="quote__rating">5,0</span>
+          </div>
+          <span class="quote__title">Crescimento de 70% ano a ano</span>
+          <hr>
+          <p>"Se a gente comparar ano a ano, crescemos 70%. Isso mostra que as decisões, e a Hundert
+            entre essas decisões, estão gerando o resultado que a gente espera."</p>
+          <figcaption><span class="avatar" aria-hidden="true">DL</span>
+            <span><strong>Diego Lopes</strong><br>Head de DTC</span></figcaption>
+        </figure>
+        <div class="stack">
+          <h3 class="h3">A estrela nunca carrega a nota sozinha</h3>
+          <p class="lead">Dourado sobre coral dá 1.81:1. Informação não pode existir só em cor, então
+            a nota aparece em texto ao lado das estrelas, e o grupo tem rótulo acessível.</p>
+          <a class="linkarrow" href="#componentes" style="color:var(--fg-on-light);border-color:var(--border-light)">Ver todos os depoimentos &#8594;</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ Movimento e lacunas ═══ -->
+  <section class="wrap sec stack reveal">
+    <div class="stack-sm">
+      <span class="eyebrow">Movimento</span>
+      <h2 class="h2">Tudo aqui é <span class="accent">[I]</span>.<br>Screenshot não tem tempo.</h2>
+      <p class="lead">Este sistema de movimento foi decidido, não observado. Ele é conservador de
+        propósito: entrada de seção uma única vez, hover de 220ms, e nada que se repita enquanto a
+        pessoa lê. As seções desta página estão usando exatamente essas curvas  -  role para trás e
+        elas não reanimam.</p>
+    </div>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Gesto</th><th>Duração</th><th>Curva</th><th>Marca</th></tr></thead>
+      <tbody>
+        <tr><td>Entrada de seção</td><td class="num">600ms</td><td class="num">--ease-out</td><td><span class="mark">[I]</span></td></tr>
+        <tr><td>Hover de CTA</td><td class="num">220ms</td><td class="num">--ease-standard</td><td><span class="mark">[I]</span></td></tr>
+        <tr><td>Aba e acordeão</td><td class="num">220ms</td><td class="num">--ease-standard</td><td><span class="mark">[I]</span></td></tr>
+        <tr><td>Realce de estado</td><td class="num">140ms</td><td class="num">--ease-standard</td><td><span class="mark">[I]</span></td></tr>
+      </tbody>
+    </table>
+      </div>
+    <p class="lead"><span class="mono">prefers-reduced-motion</span> zera as três durações em
+      <span class="mono">tokens.css</span>. Não é opcional.</p>
+
+    <div class="stack-sm">
+      <span class="eyebrow">O que falta para este sistema virar medição</span>
+      <ul class="gaps">
+        <li><b>01</b><span>Movimento inteiro. Durações, curvas, o que anima na entrada.</span></li>
+        <li><b>02</b><span>Nome da família tipográfica. Um print do painel Fonts do DevTools resolve.</span></li>
+        <li><b>03</b><span>Hex exato. Tudo foi lido a olho; o dump promove [E-vis] a [E] de uma vez.</span></li>
+        <li><b>04</b><span>Mobile. Não há nenhuma captura em 390px, então a escala mobile é [D].</span></li>
+        <li><b>05</b><span>Estados de hover, foco, erro, vazio e carregando.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="wrap sec stack">
+    <p class="lead">Hundert AI · sistema de design v0.1.0 · valores em
+      <span class="mono">tokens.css</span> · evidência em
+      <span class="mono">research/v4-go-modular-b/OBSERVATIONS.md</span></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.currentScript.closest('x-dc') || document;
+
+  // Abas: clique e setas do teclado
+  var tabs = [].slice.call(root.querySelectorAll('[role="tab"]'));
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      var panel = root.querySelector('#' + t.getAttribute('aria-controls'));
+      if (panel) panel.hidden = !on;
+    });
+  }
+  tabs.forEach(function (tab, i) {
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+    tab.addEventListener('click', function () { select(tab); });
+    tab.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      var next = tabs[(i + d + tabs.length) % tabs.length];
+      select(next); next.focus();
+    });
+  });
+
+  // Acordeao
+  [].forEach.call(root.querySelectorAll('.faq__btn'), function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.querySelector('i').textContent = open ? '+' : '−';
+      var body = root.querySelector('#' + btn.getAttribute('aria-controls'));
+      if (body) body.hidden = open;
+    });
+  });
+
+  // Entrada de secao, uma vez por elemento
+  var reveals = [].slice.call(root.querySelectorAll('.reveal'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -10% 0px' });
+    reveals.forEach(function (el) { io.observe(el); });
+  }
+})();
+</script>
+</x-dc>
+</body>
+</html>
