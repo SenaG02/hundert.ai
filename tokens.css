@@ -60,6 +60,9 @@
   --star:               #F5B400; /* [E-vis] decorativo. Exige nota textual ao lado */
   --on-action-veil:     rgb(255 255 255 / 0.18); /* [I] disco da seta dentro do CTA */
   --on-quote-rule:      rgb(255 255 255 / 0.35); /* [I] regua dentro do card de citacao */
+  --field-error:        var(--accent-brand-deep); /* [I] alias semantico, nao um vermelho novo.
+                          Erro de campo vive no painel claro, onde --accent-brand-deep da 5.31:1.
+                          Nunca aparece sozinho: sempre com texto e aria-invalid */
 
   /* ── Tipografia ──────────────────────────────────────────────────────── */
   --font-display: "Aeonik", "Inter Tight", system-ui, -apple-system, sans-serif; /* [I] */

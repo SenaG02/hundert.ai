@@ -17,7 +17,11 @@
     · o card de retrato do bloco claro
     · logos de parceiro e certificacoes
     · CNPJ e links legais do rodape
-    · o endpoint do formulario, que hoje nao envia nada
+    · o link da politica de privacidade no consentimento do formulario
+
+  O formulario JA esta conectado: envia para um Apps Script que grava em Google
+  Sheets. Falta so publicar o script e colar a URL na constante ENDPOINT.
+  Passo a passo em integrations/google-sheets/README.md
 
   Depoimento e metrica sem origem verificavel nao devem ir ao ar. Isso nao e
   detalhe de design: e a diferenca entre prova e alegacao.
@@ -158,29 +162,62 @@
 
     <form class="formcard" id="diagnostico" novalidate>
       <div class="field"><label for="lp-nome">Nome e sobrenome</label>
-        <input id="lp-nome" name="nome" type="text" autocomplete="name" placeholder="Como podemos te chamar?" required></div>
+        <input id="lp-nome" name="nome" type="text" autocomplete="name"
+               placeholder="Como podemos te chamar?" required
+               aria-describedby="err-nome">
+        <span class="field__error" id="err-nome" hidden></span></div>
+
       <div class="field"><label for="lp-email">E-mail corporativo</label>
-        <input id="lp-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required></div>
+        <input id="lp-email" name="email" type="email" autocomplete="email"
+               placeholder="voce@empresa.com" required aria-describedby="err-email">
+        <span class="field__error" id="err-email" hidden></span></div>
+
       <div class="field"><label for="lp-empresa">Empresa</label>
-        <input id="lp-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
+        <input id="lp-empresa" name="empresa" type="text" autocomplete="organization"
+               placeholder="Nome da empresa" required aria-describedby="err-empresa">
+        <span class="field__error" id="err-empresa" hidden></span></div>
+
       <div class="field"><label for="lp-tel">Telefone</label>
-        <input id="lp-tel" name="telefone" type="tel" autocomplete="tel" placeholder="(00) 00000-0000" required></div>
+        <input id="lp-tel" name="telefone" type="tel" autocomplete="tel"
+               placeholder="(00) 00000-0000" required aria-describedby="err-telefone">
+        <span class="field__error" id="err-telefone" hidden></span></div>
+
       <div class="field"><label for="lp-fat">Faturamento mensal</label>
-        <select id="lp-fat" name="faturamento" required>
+        <select id="lp-fat" name="faturamento" required aria-describedby="err-faturamento">
           <option value="">Selecione</option>
-          <option>Até R$ 100 mil</option>
+          <option>Ate R$ 100 mil</option>
           <option>R$ 100 mil a R$ 500 mil</option>
           <option>R$ 500 mil a R$ 2 mi</option>
           <option>Acima de R$ 2 mi</option>
-        </select></div>
+        </select>
+        <span class="field__error" id="err-faturamento" hidden></span></div>
+
       <div class="field"><label for="lp-seg">Segmento</label>
-        <select id="lp-seg" name="segmento" required>
+        <select id="lp-seg" name="segmento" required aria-describedby="err-segmento">
           <option value="">Selecione</option>
-          <option>E-commerce</option><option>Serviços B2B</option>
-          <option>Indústria</option><option>Saúde</option><option>Outro</option>
-        </select></div>
-      <button type="submit" class="cta cta--block">Falar com especialista</button>
-      <p class="formnote" id="lp-formnote" hidden role="status"></p>
+          <option>E-commerce</option><option>Servicos B2B</option>
+          <option>Industria</option><option>Saude</option><option>Outro</option>
+        </select>
+        <span class="field__error" id="err-segmento" hidden></span></div>
+
+      <!-- Honeypot. Fora da tela para gente, visivel para robo que preenche tudo. -->
+      <div class="hp" aria-hidden="true">
+        <label for="lp-website">Nao preencha este campo</label>
+        <input id="lp-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="field">
+        <label class="formconsent" for="lp-consent">
+          <input id="lp-consent" name="consentimento" type="checkbox" required
+                 aria-describedby="err-consentimento">
+          <span>Autorizo a Hundert AI a usar meus dados para entrar em contato sobre este
+            diagnostico, conforme a <a href="#faq" data-placeholder>politica de privacidade</a>.</span>
+        </label>
+        <span class="field__error" id="err-consentimento" hidden></span>
+      </div>
+
+      <button type="submit" class="cta cta--block" id="lp-submit">Falar com especialista</button>
+      <p class="formstatus" id="lp-status" hidden role="status" aria-live="polite"></p>
     </form>
   </header>
 
@@ -461,15 +498,149 @@
     });
   });
 
-  // O formulario ainda nao tem destino. Ele diz isso em vez de fingir que enviou.
+  /* ═══ Formulario -> Google Sheets ═══════════════════════════════════════
+     Cole aqui a URL /exec da implantacao do Apps Script.
+     Passo a passo: integrations/google-sheets/README.md
+     Enquanto estiver vazio, o formulario valida tudo e avisa que nao ha destino,
+     em vez de fingir que enviou. */
+  var ENDPOINT = '';
+
   var form = root.querySelector('#diagnostico');
-  if (form) form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var note = root.querySelector('#lp-formnote');
-    if (!note) return;
-    note.textContent = 'Maquete de design: este formulario ainda nao esta conectado a um destino.';
-    note.hidden = false;
-  });
+  if (form) {
+    var botao = root.querySelector('#lp-submit');
+    var status = root.querySelector('#lp-status');
+    var rotuloOriginal = botao ? botao.textContent : '';
+
+    /* UTM e clique de anuncio sao gravados na primeira visita e sobrevivem a
+       navegacao interna. Sem isso, o lead chega no CRM sem origem. */
+    var RASTREIO = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'];
+    function guardaOrigem() {
+      try {
+        var q = new URLSearchParams(location.search);
+        RASTREIO.forEach(function (k) {
+          var v = q.get(k);
+          if (v && !sessionStorage.getItem(k)) sessionStorage.setItem(k, v);
+        });
+      } catch (_) { /* sessionStorage bloqueado: seguimos sem origem */ }
+    }
+    function leOrigem(k) {
+      try { return sessionStorage.getItem(k) || ''; } catch (_) { return ''; }
+    }
+    guardaOrigem();
+
+    var OBRIGATORIOS = {
+      nome: 'Precisamos do seu nome.',
+      email: 'Informe um e-mail corporativo valido.',
+      empresa: 'Informe o nome da empresa.',
+      telefone: 'Informe um telefone com DDD.',
+      faturamento: 'Selecione a faixa de faturamento.',
+      segmento: 'Selecione o segmento.',
+      consentimento: 'Precisamos da sua autorizacao para entrar em contato.'
+    };
+
+    function marca(campo, mensagem) {
+      var el = form.elements[campo];
+      var erro = root.querySelector('#err-' + campo);
+      if (!el || !erro) return;
+      if (mensagem) {
+        el.setAttribute('aria-invalid', 'true');
+        erro.textContent = mensagem;
+        erro.hidden = false;
+      } else {
+        el.removeAttribute('aria-invalid');
+        erro.hidden = true;
+        erro.textContent = '';
+      }
+    }
+
+    function valida() {
+      var primeiroInvalido = null;
+      Object.keys(OBRIGATORIOS).forEach(function (campo) {
+        var el = form.elements[campo];
+        if (!el) return;
+        var vazio = el.type === 'checkbox' ? !el.checked : !String(el.value || '').trim();
+        var emailRuim = campo === 'email' && !vazio && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value);
+        var mensagem = (vazio || emailRuim) ? OBRIGATORIOS[campo] : '';
+        marca(campo, mensagem);
+        if (mensagem && !primeiroInvalido) primeiroInvalido = el;
+      });
+      return primeiroInvalido;
+    }
+
+    /* Limpa o erro assim que a pessoa corrige, em vez de esperar novo envio. */
+    Object.keys(OBRIGATORIOS).forEach(function (campo) {
+      var el = form.elements[campo];
+      if (el) el.addEventListener('input', function () { marca(campo, ''); });
+      if (el && el.tagName === 'SELECT') el.addEventListener('change', function () { marca(campo, ''); });
+    });
+
+    function avisa(texto, tipo) {
+      if (!status) return;
+      status.textContent = texto;
+      status.className = 'formstatus formstatus--' + tipo;
+      status.hidden = false;
+    }
+
+    function ocupado(sim) {
+      if (!botao) return;
+      botao.setAttribute('aria-busy', String(sim));
+      botao.disabled = sim;
+      botao.textContent = sim ? 'Enviando...' : rotuloOriginal;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var invalido = valida();
+      if (invalido) {
+        avisa('Confira os campos marcados.', 'error');
+        invalido.focus();
+        return;
+      }
+
+      var payload = {
+        nome: form.elements.nome.value.trim(),
+        email: form.elements.email.value.trim(),
+        empresa: form.elements.empresa.value.trim(),
+        telefone: form.elements.telefone.value.trim(),
+        faturamento: form.elements.faturamento.value,
+        segmento: form.elements.segmento.value,
+        consentimento: form.elements.consentimento.checked ? 'sim' : 'nao',
+        website: form.elements.website ? form.elements.website.value : '',
+        pagina: location.href,
+        referrer: document.referrer || '',
+        dispositivo: navigator.userAgent
+      };
+      RASTREIO.forEach(function (k) { payload[k] = leOrigem(k); });
+
+      if (!ENDPOINT) {
+        avisa('Formulario validado, mas ainda sem destino: falta publicar o Apps Script e '
+          + 'preencher a constante ENDPOINT. Ver integrations/google-sheets/README.md', 'error');
+        return;
+      }
+
+      ocupado(true);
+      /* text/plain evita a requisicao de preflight, que o Apps Script nao responde.
+         O corpo continua sendo JSON e o doPost le de e.postData.contents. */
+      fetch(ENDPOINT, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      }).then(function (dados) {
+        if (!dados || dados.ok !== true) throw new Error(dados && dados.erro || 'resposta_invalida');
+        form.reset();
+        avisa('Recebemos seu pedido. Um especialista entra em contato em ate um dia util.', 'ok');
+        ocupado(false);
+      }).catch(function (err) {
+        avisa('Nao consegui enviar agora. Tente de novo em instantes ou chame no WhatsApp. '
+          + '(' + err.message + ')', 'error');
+        ocupado(false);
+      });
+    });
+  }
 
   var reveals = [].slice.call(root.querySelectorAll('.reveal'));
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
