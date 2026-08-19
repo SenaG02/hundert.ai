@@ -170,6 +170,10 @@
 .formconsent input{inline-size:var(--space-4);block-size:var(--space-4);flex:none;
   margin-block-start:var(--space-1);accent-color:var(--action-strong);}
 .formconsent a{color:var(--accent-brand-deep);}
-/* Honeypot: fora da tela, mas nao display:none, senao o bot ignora. */
+/* Honeypot: fora da tela, mas nao display:none, senao o bot ignora.
+   O input recebe inline-size proprio: sem isso ele herda a largura padrao
+   do navegador (~170px) mesmo dentro do wrapper de 1px, e essa geometria
+   fantasma escapa do clip-path em qualquer teste que leia getBoundingClientRect. */
 .hp{position:absolute;inline-size:var(--hairline);block-size:var(--hairline);
   overflow:hidden;clip-path:inset(50%);white-space:nowrap;}
+.hp input{inline-size:var(--hairline);block-size:var(--hairline);padding:0;border:0;}
