@@ -13,6 +13,8 @@ marks:
   E-vis: observado nos screenshots da referencia; estrutura confiavel, valor numerico aproximado
   D: derivado por calculo a partir de [E-vis], com a conta declarada
   I: decidido para preencher lacuna, com o motivo declarado
+  C: especificado pelo cliente - hex ou valor exato, dado diretamente, nao aproximado nem
+    inferido. A marca mais forte do sistema: nao ha conta a verificar, so aplicar
 confidence:
   tokens_marcados: 63
   E-vis: "65%"
@@ -29,6 +31,7 @@ color:
   accent-brand: "#F0323F [D]"
   accent-brand-core: "#E11D2E [E-vis]"
   action: "#16A34A [D]"
+  action-gradient: "#27A106 -> #2E7900 [C]"
   action-strong: "#15803D [D]"
   quote-from: "#D93B28 [D]"
 typography:

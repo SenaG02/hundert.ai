@@ -46,11 +46,22 @@
   /* ── Acento de acao: decisao. Um por secao ───────────────────────────── */
   --action:             #16A34A; /* [D] 3.30:1 com branco. So para rotulo >= 18px bold
                                     (AA de texto grande). O verde observado (~#22C55E)
-                                    dava 2.28:1 e reprovava ate para texto grande */
+                                    dava 2.28:1 e reprovava ate para texto grande.
+                                    Mantido como fallback solido (navegador sem suporte
+                                    a gradiente) e valor base de --action-glow */
+  --action-gradient-from: #27A106; /* [C] especificado pelo cliente - hex exato, nao
+                                    aproximado. Ponta clara, canto superior esquerdo do
+                                    CTA. 3.39:1 com branco - passa AA de texto grande,
+                                    a mesma categoria do rotulo do botao (18px negrito) */
+  --action-gradient-to:   #2E7900; /* [C] especificado pelo cliente. Ponta escura, canto
+                                    inferior direito. 5.45:1 com branco */
   --action-strong:      #15803D; /* [D] 5.02:1 com branco. Obrigatorio em qualquer botao
-                                    com rotulo menor que 18px bold */
-  --action-hover:       #15803D; /* [I] escurece no hover: mantem o rotulo legivel durante
-                                    a transicao, ao contrario de clarear */
+                                    com rotulo menor que 18px bold - fica solido, nunca
+                                    ganha o gradiente, porque essa garantia de contraste
+                                    e o motivo dele existir */
+  --action-hover:       #2E7900; /* [C] mesmo valor da ponta escura do gradiente:
+                                    escurece no hover mantendo a mesma familia de cor,
+                                    em vez de introduzir um terceiro verde */
   --action-glow:        rgba(22, 163, 74, 0.35); /* [E-vis] halo difuso do CTA */
 
   /* ── Superficie de citacao ───────────────────────────────────────────── */
