@@ -66,17 +66,21 @@
       border-radius:var(--radius-field);background:var(--accent-brand-core);color:var(--fg-on-dark);
       font-family:var(--font-mono);font-size:var(--text-base);flex:none;}
     .nav__links{display:flex;flex-wrap:wrap;gap:var(--space-8);}
-    .nav__links a{color:var(--fg-on-dark);text-decoration:none;font-size:var(--text-base);
+    .nav__links a{color:var(--nav-link);text-decoration:none;font-size:var(--text-base);
       transition:color var(--dur-normal) var(--ease-standard);}
     .nav__links a:hover{color:var(--accent-brand);}
 
     /* align-items:center, a pedido do cliente: texto e formulario
        centralizados verticalmente um em relacao ao outro (o formulario e
        mais alto - centralizado, a diferenca de altura fica dividida em
-       cima e embaixo dos dois, em vez de toda embaixo). */
+       cima e embaixo dos dois, em vez de toda embaixo).
+       padding-block simetrico (--space-40 nos dois lados): o respiro do
+       menu ate o topo do formulario fica igual ao respiro da base do
+       formulario ate o painel branco, mesmo valor nos dois, a pedido do
+       cliente. */
     .hero{display:grid;gap:var(--space-16);align-items:center;
       grid-template-columns:minmax(0,1.15fr) minmax(min(100%,var(--track-card)),0.85fr);
-      padding-block:var(--space-16) var(--space-40);}
+      padding-block:var(--space-40);}
 
     /* Brilho radial de marca. Fundo, nunca texto. */
     .glow{position:relative;isolation:isolate;overflow:hidden;}

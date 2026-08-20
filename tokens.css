@@ -28,6 +28,8 @@
   /* ── Texto ───────────────────────────────────────────────────────────── */
   --fg-on-dark:         #FFFFFF; /* [E-vis] 19.80:1 sobre --bg-base */
   --fg-on-dark-muted:   #A3A3A3; /* [E-vis]  7.85:1 sobre --bg-base */
+  --nav-link:           #857777; /* [C] especificado pelo cliente - cor dos links do menu
+                              superior. 4.62:1 sobre --bg-base, passa AA de texto normal */
   --fg-on-light:        #0A0A0A; /* [E-vis] 19.80:1 sobre --bg-inverse */
   --fg-on-light-muted:  #52525B; /* [E-vis]  7.73:1 sobre --bg-inverse */
   --fg-on-form-muted:   #5B5B63; /* [D] 5.54:1 sobre --surface-form; o cinza da referencia
