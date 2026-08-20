@@ -52,6 +52,11 @@
   <link rel="stylesheet" href="./components.css">
   <style>
     /* Somente o que e especifico desta pagina. Componentes: components.css */
+    /* Header solto no topo, sem o limite de largura de --container: usa
+       padding lateral direto (sem max-width), nao a classe .wrap (que
+       tem max-width:var(--container) e centraliza) - o resto da pagina
+       (h1, formulario etc.) continua dentro de .wrap normalmente. */
+    .nav-shell{inline-size:100%;padding-inline:var(--gutter-desktop);}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:var(--space-8);
       padding-block:var(--space-6);}
     .brand{display:inline-flex;align-items:center;gap:var(--space-3);text-decoration:none;
@@ -189,6 +194,7 @@
     @media (max-width:60rem){
       .hero{grid-template-columns:minmax(0,1fr);gap:var(--space-12);
         padding-block:var(--space-8) var(--space-16);}
+      .nav-shell{padding-inline:var(--gutter-mobile);}
       .nav{flex-direction:column;align-items:flex-start;gap:var(--space-4);}
       .nav__links{gap:var(--space-6);}
       .showcase{padding:var(--space-8);}
@@ -199,7 +205,7 @@
 <div class="hds">
 
   <!-- ═══ 1. Nav ═══ -->
-  <div class="wrap">
+  <div class="nav-shell">
     <nav class="nav" aria-label="Principal">
       <a class="brand" href="#topo"><span class="brand__mark" aria-hidden="true">H</span>Hundert AI</a>
       <div class="nav__links">
