@@ -14,10 +14,16 @@
 
     · metricas do bloco de autoridade (numeros de CLIENTE, ainda inexistentes)
     · nome, cargo, empresa e citacao de cada depoimento
-    · fotos reais de Guilherme e Jefferson (hoje: iniciais em vez de foto)
     · logos de parceiro e certificacoes
     · CNPJ e links legais do rodape
     · o link da politica de privacidade no consentimento do formulario
+
+  O card "Quem senta na mesa" JA esta pronto para foto: ele alterna entre
+  Jefferson e Guilherme a cada 7s (script no fim do arquivo) e ate as fotos
+  chegarem mostra um circulo com iniciais no lugar - nao e placeholder de
+  texto falso, e o estado real de fallback. Basta soltar os arquivos em
+  assets/founders/jefferson.jpg e assets/founders/guilherme.jpg (specs em
+  assets/founders/README.md); nenhum codigo precisa mudar.
 
   A secao de servicos e o bloco de lideranca foram escritos a partir de
   research/guilherme-portfolio/EXTRACTED.md - conteudo real, nao mais
@@ -66,16 +72,49 @@
       background:radial-gradient(circle,var(--accent-brand-glow),transparent 70%);
       z-index:-1;pointer-events:none;}
 
-    /* Bloco de lideranca: dois fundadores, sem foto ainda. Reaproveita .avatar
-       (mesmo componente dos depoimentos) em vez de forcar duas pessoas dentro
-       de um card desenhado para uma foto so. */
-    .founders{display:flex;flex-direction:column;gap:var(--space-6);}
-    .founder{display:flex;gap:var(--space-4);align-items:flex-start;}
-    .founder .avatar{inline-size:var(--space-16);block-size:var(--space-16);
-      font-size:var(--text-lg);flex:none;}
+    /* Card de lideranca: alterna foto e especialidades entre os dois fundadores
+       a cada 7s (ver <script> no fim do arquivo). Grid-stack - os dois slides
+       ocupam a mesma celula - faz a altura do cartao acompanhar o slide mais
+       alto automaticamente, sem JS medindo nada. */
+    .leader-card{display:flex;flex-direction:column;gap:var(--space-4);}
+    .leader-card__stage{display:grid;border-radius:var(--radius-card-lg);overflow:hidden;
+      background:var(--bg-inverse);border:var(--hairline) solid var(--border-light);}
+    .leader-slide{grid-area:1/1;display:flex;flex-direction:column;
+      opacity:0;pointer-events:none;transition:opacity var(--dur-slow) var(--ease-out);}
+    .leader-slide.is-active{opacity:1;pointer-events:auto;}
+    .leader-slide__media{position:relative;aspect-ratio:4/5;overflow:hidden;
+      background:var(--bg-elevated);}
+    .leader-slide__media img{position:absolute;inset:0;inline-size:100%;block-size:100%;
+      object-fit:cover;display:block;}
+    /* Estado de fallback: nenhum erro real, so o par ainda nao ter sido enviado.
+       Some sozinho assim que os arquivos existirem em assets/founders/. */
+    .leader-slide__fallback{display:none;}
+    .leader-slide--noimg .leader-slide__media img{display:none;}
+    .leader-slide--noimg .leader-slide__fallback{display:grid;place-items:center;
+      position:absolute;inset:0;margin:auto;inline-size:var(--space-24);
+      block-size:var(--space-24);font-size:var(--text-2xl);}
+    .leader-slide__info{padding:var(--space-6);display:flex;flex-direction:column;
+      gap:var(--space-2);}
     .founder__role{display:block;font-size:var(--text-sm);color:var(--accent-brand-deep);
-      font-weight:var(--weight-semibold);margin-block:var(--space-1);}
-    .founder__bio{color:var(--fg-on-light-muted);font-size:var(--text-sm);}
+      font-weight:var(--weight-semibold);}
+    .tags{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-block-start:var(--space-2);
+      list-style:none;padding:0;}
+    .tags li{font-size:var(--text-xs);font-weight:var(--weight-semibold);
+      color:var(--fg-on-light-muted);background:var(--surface-form);
+      border:var(--hairline) solid var(--border-light);border-radius:var(--radius-pill);
+      padding:var(--space-1) var(--space-3);}
+    .leader-card__controls{display:flex;align-items:center;gap:var(--space-3);}
+    .leader-dot{inline-size:var(--space-3);block-size:var(--space-3);
+      border-radius:var(--radius-pill);border:var(--hairline) solid var(--border-light);
+      background:var(--surface-form);padding:0;cursor:pointer;
+      transition:background var(--dur-normal) var(--ease-standard);}
+    .leader-dot[aria-current="true"]{background:var(--accent-brand-deep);
+      border-color:var(--accent-brand-deep);}
+    .leader-pause{margin-inline-start:auto;display:inline-flex;align-items:center;
+      gap:var(--space-2);font-size:var(--text-sm);color:var(--fg-on-light-muted);
+      background:none;border:0;cursor:pointer;padding:var(--space-1) var(--space-2);
+      border-radius:var(--radius-field);}
+    .leader-pause:hover{color:var(--fg-on-light);}
 
     /* Faixa horizontal que sangra na borda: sinaliza continuacao sem seta. */
     .scroller{display:flex;gap:var(--space-6);overflow-x:auto;scroll-snap-type:x mandatory;
@@ -234,25 +273,46 @@
           <a class="cta" href="#diagnostico">Solicite seu diagnóstico
             <span class="cta__arrow" aria-hidden="true">&#8594;</span></a>
         </div>
-        <div class="founders">
-          <div class="founder">
-            <span class="avatar" aria-hidden="true">J</span>
-            <div>
-              <strong>Jefferson</strong>
-              <span class="founder__role">IA &amp; Desenvolvimento</span>
-              <p class="founder__bio">Lidera a frente técnica da Hundert: arquitetura de IA
-                e desenvolvimento de software aplicados à operação dos clientes.</p>
-            </div>
+        <div class="leader-card">
+          <div class="leader-card__stage">
+            <figure class="leader-slide is-active">
+              <div class="leader-slide__media">
+                <img src="./assets/founders/jefferson.jpg" alt="Foto de Jefferson">
+                <span class="avatar leader-slide__fallback" aria-hidden="true">J</span>
+              </div>
+              <figcaption class="leader-slide__info">
+                <strong>Jefferson</strong>
+                <span class="founder__role">IA &amp; Desenvolvimento</span>
+                <ul class="tags">
+                  <li>Inteligência Artificial</li>
+                  <li>Desenvolvimento de Software</li>
+                </ul>
+              </figcaption>
+            </figure>
+            <figure class="leader-slide" aria-hidden="true">
+              <div class="leader-slide__media">
+                <img src="./assets/founders/guilherme.jpg" alt="Foto de Guilherme Sena">
+                <span class="avatar leader-slide__fallback" aria-hidden="true">GS</span>
+              </div>
+              <figcaption class="leader-slide__info">
+                <strong>Guilherme Sena</strong>
+                <span class="founder__role">Marketing &amp; Posicionamento</span>
+                <ul class="tags">
+                  <li>Estratégia de Conteúdo</li>
+                  <li>Crescimento Orgânico</li>
+                  <li>Posicionamento de Marca</li>
+                </ul>
+              </figcaption>
+            </figure>
           </div>
-          <div class="founder">
-            <span class="avatar" aria-hidden="true">GS</span>
-            <div>
-              <strong>Guilherme Sena</strong>
-              <span class="founder__role">Marketing &amp; Posicionamento</span>
-              <p class="founder__bio">Estrategista de conteúdo e crescimento orgânico. Já
-                levou uma conta do zero a 100 mil seguidores em 6 meses e soma mais de
-                25 milhões de visualizações, sem depender de mídia paga.</p>
-            </div>
+          <div class="leader-card__controls">
+            <button type="button" class="leader-dot" aria-current="true" aria-label="Ver Jefferson"></button>
+            <button type="button" class="leader-dot" aria-current="false" aria-label="Ver Guilherme Sena"></button>
+            <button type="button" class="leader-pause" id="leader-pause" aria-pressed="false">
+              <svg class="leader-pause__icon-pause" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2" y="1" width="3" height="12" fill="currentColor"/><rect x="9" y="1" width="3" height="12" fill="currentColor"/></svg>
+              <svg class="leader-pause__icon-play" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" hidden><path d="M3 1l9 6-9 6z" fill="currentColor"/></svg>
+              <span id="leader-pause-label">Pausar troca automática</span>
+            </button>
           </div>
         </div>
       </div>
@@ -645,6 +705,80 @@
         ocupado(false);
       });
     });
+  }
+
+  /* ═══ Card de lideranca: alterna foto/especialidades a cada 7s ═══════════
+     Pausa em hover, em foco de teclado, e ao clicar num ponto manualmente
+     (convencao de carrossel: interacao do usuario assume o controle).
+     Nunca autoinicia sob prefers-reduced-motion - troca automatica e
+     decoracao, nao deve rodar para quem pediu menos movimento; os pontos
+     continuam clicaveis para trocar manualmente. */
+  var leaderStage = root.querySelector('.leader-card__stage');
+  if (leaderStage) {
+    var leaderSlides = [].slice.call(leaderStage.querySelectorAll('.leader-slide'));
+    var leaderDots = [].slice.call(root.querySelectorAll('.leader-dot'));
+    var leaderPause = root.querySelector('#leader-pause');
+    var leaderPauseLabel = root.querySelector('#leader-pause-label');
+    var leaderIconPause = leaderPause ? leaderPause.querySelector('.leader-pause__icon-pause') : null;
+    var leaderIconPlay = leaderPause ? leaderPause.querySelector('.leader-pause__icon-play') : null;
+    var leaderAtual = Math.max(0, leaderSlides.findIndex(function (s) { return s.classList.contains('is-active'); }));
+    var leaderTimer = null;
+    var LEADER_INTERVALO = 7000;
+    var leaderReduzido = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    leaderSlides.forEach(function (slide) {
+      var img = slide.querySelector('img');
+      if (!img) return;
+      var marcaSemFoto = function () { slide.classList.add('leader-slide--noimg'); };
+      img.addEventListener('error', marcaSemFoto, { once: true });
+      /* A imagem fica no topo do documento e este script roda so no fim do
+         body: para uma resposta 404 rapida (servidor local, por exemplo),
+         o navegador ja tenta carregar antes deste listener existir, e o
+         evento 'error' dispara e se perde. img.complete com naturalWidth
+         0 cobre exatamente esse caso. */
+      if (img.complete && img.naturalWidth === 0) marcaSemFoto();
+    });
+
+    function leaderMostra(i) {
+      leaderAtual = (i + leaderSlides.length) % leaderSlides.length;
+      leaderSlides.forEach(function (s, idx) {
+        var ativo = idx === leaderAtual;
+        s.classList.toggle('is-active', ativo);
+        s.setAttribute('aria-hidden', String(!ativo));
+      });
+      leaderDots.forEach(function (d, idx) { d.setAttribute('aria-current', String(idx === leaderAtual)); });
+    }
+    function leaderParar() {
+      if (leaderTimer) { clearInterval(leaderTimer); leaderTimer = null; }
+    }
+    function leaderTocar() {
+      leaderParar();
+      leaderTimer = setInterval(function () { leaderMostra(leaderAtual + 1); }, LEADER_INTERVALO);
+    }
+    function leaderDefinePausado(pausado) {
+      if (pausado) leaderParar(); else leaderTocar();
+      if (leaderPause) leaderPause.setAttribute('aria-pressed', String(pausado));
+      if (leaderPauseLabel) leaderPauseLabel.textContent = pausado ? 'Retomar troca automática' : 'Pausar troca automática';
+      if (leaderIconPause) leaderIconPause.hidden = pausado;
+      if (leaderIconPlay) leaderIconPlay.hidden = !pausado;
+    }
+
+    leaderDots.forEach(function (dot, idx) {
+      dot.addEventListener('click', function () { leaderMostra(idx); leaderDefinePausado(true); });
+    });
+    if (leaderPause) leaderPause.addEventListener('click', function () {
+      leaderDefinePausado(leaderPause.getAttribute('aria-pressed') !== 'true');
+    });
+    leaderStage.addEventListener('mouseenter', leaderParar);
+    leaderStage.addEventListener('mouseleave', function () {
+      if (leaderPause && leaderPause.getAttribute('aria-pressed') !== 'true') leaderTocar();
+    });
+    leaderStage.addEventListener('focusin', leaderParar);
+    leaderStage.addEventListener('focusout', function () {
+      if (leaderPause && leaderPause.getAttribute('aria-pressed') !== 'true') leaderTocar();
+    });
+
+    if (leaderReduzido) leaderDefinePausado(true); else leaderTocar();
   }
 
   var reveals = [].slice.call(root.querySelectorAll('.reveal'));
