@@ -28,12 +28,12 @@ color:
   fg-on-dark: "#FFFFFF [E-vis]"
   fg-on-dark-muted: "#A3A3A3 [E-vis]"
   fg-on-light-muted: "#52525B [E-vis]"
-  accent-brand: "#F0323F [D]"
-  accent-brand-core: "#E11D2E [E-vis]"
+  accent-brand: "#FF5A1F [C]"
+  accent-brand-core: "#FF5A1F [C]"
   action: "#16A34A [D]"
   action-gradient: "#27A106 -> #2E7900 [C]"
   action-strong: "#15803D [D]"
-  quote-from: "#D93B28 [D]"
+  quote-from: "#CF4919 [D]"
 typography:
   font-display: "Aeonik, Inter Tight [I]"
   font-mono: "JetBrains Mono [E-vis]"
@@ -174,14 +174,20 @@ Duas familias de superficie e **duas familias de acento com funcoes que nao se c
 | Painel claro | `--bg-inverse` | bloco de autoridade e depoimentos |
 | Superficie de formulario | `--surface-form` | o card do hero, unico ponto de inversao local |
 | Texto | `--fg-on-dark`, `--fg-on-dark-muted`, `--fg-on-light`, `--fg-on-light-muted` | |
-| **Marca** | `--accent-brand`, `--accent-brand-core` | logo, check, segunda linha de titulo, numero de metrica, aba ativa, link de rodape, brilho de fundo |
+| **Marca** | `--accent-brand`, `--accent-brand-core` | check, segunda linha de titulo, numero de metrica, aba ativa, link de rodape, brilho de fundo (nao mais no logo - ver Logo abaixo) |
 | **Acao** | `--action`, `--action-strong` | **exclusivamente CTA primario** |
 
-**A regra mais importante do sistema:** o vermelho nunca e um botao, e o verde nunca e
-decoracao. O vermelho carrega quantidade e identidade, aparece dezenas de vezes por pagina e
+**A regra mais importante do sistema:** o laranja nunca e um botao, e o verde nunca e
+decoracao. O laranja carrega quantidade e identidade, aparece dezenas de vezes por pagina e
 por isso perde poder de convocacao. O verde aparece **uma vez por secao** e por isso ainda
-manda. Inverter isso destroi as duas cores de uma vez: um CTA vermelho no meio de vinte
-elementos vermelhos vira invisivel.
+manda. Inverter isso destroi as duas cores de uma vez: um CTA laranja no meio de vinte
+elementos laranja vira invisivel.
+
+### Logo
+
+Wordmark "Hundert" - so o nome, sem marca grafica (quadrado, icone ou sigla) ao lado. Mesma
+tipografia do titulo (`--font-display`, `--weight-bold`), cor `--fg-on-dark` (branco). Aparece
+identico no cabecalho e no rodape.
 
 Onde o acento **nunca** aparece: em texto corrido, em borda de campo, em fundo de secao
 inteira, e dentro do card de formulario. Essa ausencia e o que da peso a presenca.
@@ -239,7 +245,7 @@ dump chegar:
 
 ### Iconografia
 
-Check de lista em vermelho, linha fina, sempre no mesmo tamanho do corpo. Seta de CTA dentro de
+Check de lista em laranja, linha fina, sempre no mesmo tamanho do corpo. Seta de CTA dentro de
 circulo, a direita do rotulo. Logos de terceiros entram monocromaticos no escuro e coloridos
 quando dentro de bolha branca. Icone nunca aparece sozinho como decoracao de card.
 
@@ -258,10 +264,11 @@ quando dentro de bolha branca. Icone nunca aparece sozinho como decoracao de car
 
 **Nao faca**
 
-- CTA primario vermelho, em nenhuma hipotese
+- CTA primario laranja, em nenhuma hipotese
 - Verde em qualquer coisa que nao seja acao primaria
 - Dois CTAs de mesmo peso na mesma secao
-- Texto de corpo em `--accent-brand-core`: 4.16:1 reprova
+- Texto de corpo (nao-grande) em `--accent-brand`/`-deep`/`-core` sobre painel claro:
+  3.12:1 reprova AA de corpo - usar `--accent-brand-text-safe` nesses casos
 - Sombra difusa para separar plano no escuro: use `--bg-elevated`
 - Entrelinha 1.05 em texto de mais de tres linhas
 - Estrela de avaliacao sem a nota em texto ao lado
@@ -289,12 +296,12 @@ Todos implementados em `components.css` e em uso nas duas superficies. Inventari
 | `nav` | marca a esquerda, 4 links a direita, sem CTA |
 | `hero-split` | coluna de texto + card de formulario, 50/50 |
 | `eyebrow` | ponto de marca + texto caixa alta com tracking |
-| `check-list` | 3 itens, check vermelho, texto branco |
+| `check-list` | 3 itens, check laranja, texto branco |
 | `partner-strip` | rotulo + 3 logos monocromaticos |
 | `panel-inverse` | painel claro com `--radius-panel` nos cantos de encontro |
 | `portrait-card` | retrato sobre marca, nome vazado na vertical, legenda inferior |
 | `quote-carousel` | cards de citacao com estrelas, titulo, regua, avatar |
-| `metric-strip` | faixa horizontal de cards com numero mono em vermelho |
+| `metric-strip` | faixa horizontal de cards com numero mono em laranja |
 | `tab-pills` + `showcase-card` | abas em pill, card branco com titulo bicolor e bolhas de logo |
 | `constellation` | bolhas de logo ligadas por linha fina a um centro de marca |
 | `faq-accordion` | linhas escuras com icone de mais |
@@ -318,9 +325,14 @@ aparencia de forma perceptivel a olho nu; todas mudam quem consegue ler a pagina
 | O que | Referencia | Aqui | Motivo |
 |---|---|---|---|
 | Verde do CTA | ~`#22C55E`, branco a **2.28:1** | `--action` `#16A34A` a 3.30:1 para rotulo >= 18px bold, `--action-strong` `#15803D` a 5.02:1 abaixo disso | 2.28:1 reprova ate para texto grande. O rotulo do botao principal e a coisa que mais precisa ser lida |
-| Vermelho em texto | ~`#E11D2E` a **4.16:1** | `--accent-brand` `#F0323F` a 4.93:1 sobre base e 4.59:1 sobre elevated | o vermelho de identidade fica em `--accent-brand-core`, restrito a forma e marca |
-| Card de citacao | coral com branco a **3.33:1** | `--quote-from` `#D93B28` a 4.56:1, `--quote-to` `#B32A1C` a 6.43:1 | citacao e texto corrido e precisa de 4.5:1 |
+| Vermelho em texto | ~`#E11D2E` a **4.16:1** | `--accent-brand` `#FF5A1F` a 6.35:1 sobre base e 5.91:1 sobre elevated | o acento de identidade fica em `--accent-brand-core`, restrito a forma e marca |
+| Card de citacao | coral com branco a **3.33:1** | `--quote-from` `#CF4919` a 4.56:1, `--quote-to` `#A63A14` a 6.48:1 | citacao e texto corrido e precisa de 4.5:1 |
 | Estrela de avaliacao | dourado sobre coral a **1.81:1** | mesma estrela, com a nota em texto obrigatoria ao lado | informacao nao pode existir so em cor |
+
+> Nota: a familia vermelha original (`#E11D2E`/`#F0323F`/`#D4172A`) foi substituida por
+> `#FF5A1F` (laranja) em decisao posterior do cliente, cor base declarada da paleta da
+> marca - troca de identidade, nao de contraste. Os valores acima ja refletem a cor atual;
+> os calculos de contraste foram refeitos para o novo matiz (ver `tokens.css`).
 
 Alem dessas, uma adicao: `--border-light` nos campos de formulario. A referencia usa campo sem
 borda visivel, o que apaga o limite do alvo de clique e prejudica o estado de foco.

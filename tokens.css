@@ -15,7 +15,9 @@
   --bg-elevated:        #141414; /* [E-vis] cards de metrica e linhas de FAQ */
   --bg-elevated-2:      #1C1C1C; /* [E-vis] bolhas de icone da constelacao */
   --border-dark:        #262626; /* [E-vis] borda de baixissimo contraste nos cards */
-  --border-dark-accent: #3A1518; /* [E-vis] borda avermelhada do primeiro card da faixa */
+  --border-dark-accent: #3D1607; /* [D] borda do primeiro card da faixa - luminancia
+                                    equivalente ao valor anterior (#3A1518), matiz
+                                    trocado de vermelho para laranja da marca */
 
   /* ── Superficies claras ──────────────────────────────────────────────── */
   --bg-inverse:         #FFFFFF; /* [E-vis] painel claro */
@@ -36,14 +38,22 @@
                                     dava 3.98:1 e reprovava */
 
   /* ── Acento de marca: quantidade, identidade, enfase. Nunca acao ─────── */
-  --accent-brand:       #F0323F; /* [D] 4.93:1 sobre base / 4.59:1 sobre elevated.
-                                    Partiu do vermelho observado (~#E11D2E, 4.16:1) e
-                                    clareou o minimo para passar AA de corpo nos dois fundos */
-  --accent-brand-deep:  #D4172A; /* [D] 5.31:1 sobre --bg-inverse. Mesmo matiz escurecido
-                                    para uso sobre painel claro */
-  --accent-brand-core:  #E11D2E; /* [E-vis] vermelho de identidade. Marca, brilho, formas.
-                                    PROIBIDO em texto: 4.16:1 nao passa AA de corpo */
-  --accent-brand-glow:  rgba(225, 29, 46, 0.18); /* [E-vis] brilho radial de fundo */
+  --accent-brand:       #FF5A1F; /* [C] cor base da marca, especificada pelo cliente -
+                                    substitui a familia vermelha. 6.35:1 sobre --bg-base /
+                                    5.91:1 sobre --bg-elevated, passa AA de corpo nos dois */
+  --accent-brand-deep:  #FF5A1F; /* [C] mesmo valor - usada sobre painel claro so em texto
+                                    grande (h2 .accent, titulo da vitrine): 3.12:1 sobre
+                                    --bg-inverse, passa AA de texto grande. Texto pequeno
+                                    sobre fundo claro usa --accent-brand-text-safe abaixo */
+  --accent-brand-core:  #FF5A1F; /* [C] mesmo valor. Marca, brilho, formas - decorativo/
+                                    logotipo (rotulo "H" dentro do diagrama), nao corpo de
+                                    texto */
+  --accent-brand-text-safe: #B84116; /* [D] --accent-brand escurecido (fator 0.72) para
+                                    passar AA de texto pequeno sobre fundo claro: 5.54:1
+                                    sobre --bg-inverse, 4.56:1 sobre --surface-form. Usado
+                                    por --field-error e pelo link dentro do consentimento -
+                                    --accent-brand-deep (a cor pura) reprova nesses dois */
+  --accent-brand-glow:  rgba(255, 90, 31, 0.18); /* [D] --accent-brand em rgba, brilho radial de fundo */
 
   /* ── Acento de acao: decisao. Um por secao ───────────────────────────── */
   --action:             #16A34A; /* [D] 3.30:1 com branco. So para rotulo >= 18px bold
@@ -67,15 +77,20 @@
   --action-glow:        rgba(22, 163, 74, 0.35); /* [E-vis] halo difuso do CTA */
 
   /* ── Superficie de citacao ───────────────────────────────────────────── */
-  --quote-from:         #D93B28; /* [D] 4.56:1 com branco */
-  --quote-to:           #B32A1C; /* [D] 6.43:1 com branco. O coral observado (~#F2594A)
-                                    dava 3.33:1 e reprovava para corpo */
+  --quote-from:         #CF4919; /* [D] --accent-brand escurecido (fator 0.81), 4.56:1 com
+                                    branco - mesma razao de contraste do vermelho anterior */
+  --quote-to:           #A63A14; /* [D] --accent-brand escurecido (fator 0.65), 6.48:1 com
+                                    branco - mesma razao de contraste do vermelho anterior
+                                    (6.43:1); a cor pura (--accent-brand) da 3.12:1 e
+                                    reprova para corpo */
   --star:               #F5B400; /* [E-vis] decorativo. Exige nota textual ao lado */
   --on-action-veil:     rgb(255 255 255 / 0.18); /* [I] disco da seta dentro do CTA */
   --on-quote-rule:      rgb(255 255 255 / 0.35); /* [I] regua dentro do card de citacao */
-  --field-error:        var(--accent-brand-deep); /* [I] alias semantico, nao um vermelho novo.
-                          Erro de campo vive no painel claro, onde --accent-brand-deep da 5.31:1.
-                          Nunca aparece sozinho: sempre com texto e aria-invalid */
+  --field-error:        var(--accent-brand-text-safe); /* [I] alias semantico. Erro de
+                          campo e o link do consentimento vivem no painel claro em texto
+                          pequeno - --accent-brand-deep (a cor pura da marca) reprova AA
+                          ai, entao os dois usam --accent-brand-text-safe. Erro nunca
+                          aparece sozinho: sempre com texto e aria-invalid */
 
   /* ── Tipografia ──────────────────────────────────────────────────────── */
   --font-display: "Aeonik", "Inter Tight", system-ui, -apple-system, sans-serif; /* [I] */
