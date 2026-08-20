@@ -76,6 +76,21 @@
       background:radial-gradient(circle,var(--accent-brand-glow),transparent 70%);
       z-index:-1;pointer-events:none;}
 
+    /* Painel "Quem senta na mesa": override so nesta pagina. O padrao do
+       sistema (--radius-panel, ver design-system.dc.html) arredonda so
+       dois cantos diagonais do painel claro contra o fundo escuro; o
+       cliente pediu um container fechado, com raio igual nos 4 cantos. */
+    .panel{border-radius:var(--radius-panel-uniform);}
+    /* Coluna de texto ao lado do card de lideranca: a imagem e bem mais
+       alta que o texto, e por padrao o grid estica o item de texto para
+       a altura da linha inteira (align-items:stretch) com o conteudo
+       comecando no topo. leader-copy centraliza o bloco na vertical e
+       mantem o alinhamento a esquerda na horizontal - sem isso, o <a
+       class="cta"> (filho de um flex column) tambem esticava para a
+       largura inteira da coluna por heranca do align-items:stretch. */
+    .leader-row{gap:var(--space-16);}
+    .leader-copy{justify-content:center;align-items:flex-start;max-inline-size:var(--measure);}
+
     /* Card de lideranca: alterna a foto dos dois fundadores a cada 7s (ver
        <script> no fim do arquivo). A peca e um PNG com canal alfa real -
        fundo, corte poligonal de canto (area totalmente transparente),
@@ -262,8 +277,8 @@
   <!-- ═══ 3 e 4. Painel claro: autoridade e prova ═══ -->
   <div class="panel">
     <section class="wrap sec stack reveal">
-      <div class="grid g2">
-        <div class="stack">
+      <div class="grid g2 leader-row">
+        <div class="stack leader-copy">
           <h2 class="h2">Quem senta na mesa<br><span class="accent">com a sua operação.</span></h2>
           <p class="lead">Trazemos para dentro do seu negócio o repertório de quem já rodou esse
             problema dezenas de vezes. Não é consultoria que entrega relatório: é gente executando
