@@ -16,6 +16,11 @@
   border-radius:var(--radius-field);}
 .hds h1,.hds h2,.hds h3,.hds h4,.hds p,.hds ul,.hds ol,.hds figure{margin:0;}
 .hds ul{list-style:none;padding:0;}
+/* Presente no DOM para leitor de tela, invisivel na tela - para rotulo
+   que existe por acessibilidade mas nao aparece visualmente (o rotulo
+   ainda associa <label> ao campo via for/id; so o texto some da tela). */
+.sr-only{position:absolute;inline-size:1px;block-size:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 
 .wrap{max-width:var(--container);margin:0 auto;padding-inline:var(--gutter-desktop);}
 .sec{padding-block:var(--space-24);}
@@ -73,7 +78,17 @@
 .cta--sm{background:var(--action-strong);font-size:var(--text-base);
   padding:var(--space-3) var(--space-6);box-shadow:none;}
 .cta--sm:hover{background:var(--action-strong);}
-.cta--block{justify-content:center;inline-size:100%;}
+/* Botao de envio do formulario do hero: pedido do cliente foi um verde
+   mais vivo e chapado, cantos so levemente arredondados (acompanhando o
+   raio dos campos), sem gradiente nem brilho - diferente do .cta padrao
+   (gradiente escuro + halo), que continua como esta em todo o resto do
+   site. --action (ja no sistema, 3.30:1 com branco - valido porque o
+   rotulo e >= 18px bold, exatamente o caso aqui) e o verde mais vivo ja
+   documentado nos tokens. */
+.cta--block{justify-content:center;inline-size:100%;
+  background:var(--action);background-image:none;
+  border-radius:var(--radius-field-sm);box-shadow:none;}
+.cta--block:hover{background:var(--action-strong);transform:none;box-shadow:none;}
 .linkarrow{display:inline-flex;align-items:center;gap:var(--space-2);color:var(--fg-on-dark);
   text-decoration:none;font-weight:var(--weight-semibold);
   border-bottom:var(--hairline) solid var(--border-dark);padding-bottom:var(--space-1);
@@ -84,10 +99,17 @@
 .formcard{background:var(--surface-form);border-radius:var(--radius-card-lg);
   padding:var(--space-8);display:flex;flex-direction:column;gap:var(--space-4);}
 .field{display:flex;flex-direction:column;gap:var(--space-2);}
+/* Rotulo continua no DOM (associa <label for> ao campo, leitor de tela
+   ainda anuncia) mas some da tela - pedido do cliente foi so
+   placeholder visivel, sem texto acima da caixa. Aplicar .sr-only no
+   <label> em vez de apagar o elemento. */
 .field label{font-size:var(--text-sm);font-weight:var(--weight-semibold);color:var(--fg-on-light);}
 .field input,.field select{font-family:inherit;font-size:var(--text-md);color:var(--fg-on-light);
-  background:var(--surface-field);border:var(--hairline) solid var(--border-light);
-  border-radius:var(--radius-field);padding:var(--space-3) var(--space-4);inline-size:100%;
+  background:var(--surface-field); /* border quase invisivel de proposito (--border-light,
+    ~1.2:1 contra o fundo) - o campo sem nenhum limite visivel falha em foco/baixa visao;
+    ver tokens.css para o raciocinio completo */
+  border:var(--hairline) solid var(--border-light);
+  border-radius:var(--radius-field-sm);padding:var(--space-3) var(--space-4);inline-size:100%;
   transition:border-color var(--dur-normal) var(--ease-standard);}
 .field input::placeholder{color:var(--fg-on-form-muted);}
 .field input:focus,.field select:focus{border-color:var(--action-strong);outline:none;}

@@ -129,6 +129,9 @@
 
   /* ── Forma ───────────────────────────────────────────────────────────── */
   --radius-field:   10px;  /* [E-vis] campo de formulario */
+  --radius-field-sm: 4px;  /* [C] especificado pelo cliente - raio pequeno para os campos
+                              do formulario do hero e o botao de envio, formato retangular
+                              em vez do --radius-field padrao */
   --radius-card:    16px;  /* [E-vis] card escuro, linha de FAQ */
   --radius-card-lg: 24px;  /* [E-vis] card do formulario, card branco de servico */
   --radius-panel:   56px;  /* [E-vis] canto do painel claro contra o escuro (diagonal,

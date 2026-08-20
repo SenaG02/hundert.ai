@@ -242,30 +242,30 @@
     </div>
 
     <form class="formcard" id="diagnostico" novalidate>
-      <div class="field"><label for="lp-nome">Nome e sobrenome</label>
+      <div class="field"><label class="sr-only" for="lp-nome">Nome e sobrenome</label>
         <input id="lp-nome" name="nome" type="text" autocomplete="name"
-               placeholder="Como podemos te chamar?" required
+               placeholder="Qual é o seu nome e sobrenome?" required
                aria-describedby="err-nome">
         <span class="field__error" id="err-nome" hidden></span></div>
 
-      <div class="field"><label for="lp-email">E-mail corporativo</label>
+      <div class="field"><label class="sr-only" for="lp-email">E-mail corporativo</label>
         <input id="lp-email" name="email" type="email" autocomplete="email"
-               placeholder="voce@empresa.com" required aria-describedby="err-email">
+               placeholder="Qual seu e-mail corporativo?" required aria-describedby="err-email">
         <span class="field__error" id="err-email" hidden></span></div>
 
-      <div class="field"><label for="lp-empresa">Empresa</label>
+      <div class="field"><label class="sr-only" for="lp-empresa">Empresa</label>
         <input id="lp-empresa" name="empresa" type="text" autocomplete="organization"
-               placeholder="Nome da empresa" required aria-describedby="err-empresa">
+               placeholder="Qual o nome da sua empresa?" required aria-describedby="err-empresa">
         <span class="field__error" id="err-empresa" hidden></span></div>
 
-      <div class="field"><label for="lp-tel">Telefone</label>
+      <div class="field"><label class="sr-only" for="lp-tel">Telefone</label>
         <input id="lp-tel" name="telefone" type="tel" autocomplete="tel"
-               placeholder="(00) 00000-0000" required aria-describedby="err-telefone">
+               placeholder="Qual seu telefone?" required aria-describedby="err-telefone">
         <span class="field__error" id="err-telefone" hidden></span></div>
 
-      <div class="field"><label for="lp-fat">Faturamento mensal</label>
+      <div class="field"><label class="sr-only" for="lp-fat">Faturamento mensal</label>
         <select id="lp-fat" name="faturamento" required aria-describedby="err-faturamento">
-          <option value="">Selecione</option>
+          <option value="">Qual o faturamento mensal da sua empresa?</option>
           <option>Ate R$ 100 mil</option>
           <option>R$ 100 mil a R$ 500 mil</option>
           <option>R$ 500 mil a R$ 2 mi</option>
@@ -273,9 +273,9 @@
         </select>
         <span class="field__error" id="err-faturamento" hidden></span></div>
 
-      <div class="field"><label for="lp-seg">Segmento</label>
+      <div class="field"><label class="sr-only" for="lp-seg">Segmento</label>
         <select id="lp-seg" name="segmento" required aria-describedby="err-segmento">
-          <option value="">Selecione</option>
+          <option value="">Qual o seu segmento?</option>
           <option>E-commerce</option><option>Servicos B2B</option>
           <option>Industria</option><option>Saude</option><option>Outro</option>
         </select>
