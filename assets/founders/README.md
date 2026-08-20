@@ -10,21 +10,21 @@ Nome exato (`jefferson` / `guilherme`), qualquer extensao de imagem
 comum. Ao adicionar `guilherme`, ajuste o `src` correspondente em
 `landing.dc.html` se a extensao nao for `.jpg`.
 
-## jefferson.png - estado atual (provisorio)
+## jefferson.png - o que e o arquivo
 
-`jefferson.png` hoje e um retrato simples: recorte manual de uma peca de
-identidade que chegou pronta (fundo em gradiente laranja, nome e cargo
-desenhados dentro da imagem, canto chanfrado), removendo esse grafismo
-para sobrar so rosto e ombros - feito com `tools/image/crop-png.mjs`
-(script proprio deste repositorio, decodifica os pixels do PNG, corta o
-retangulo pedido, reescreve um PNG valido). Comando exato usado sobre o
-arquivo original (`Jefferson.JPG.png`, ja removido do repositorio):
-`node tools/image/crop-png.mjs Jefferson.JPG.png jefferson.png 450 100 880 1100`.
+`jefferson.png` e a peca final feita no Figma: 1588x2249, PNG com canal
+alfa real (RGBA) - cerca de 20% dos pixels sao totalmente transparentes
+(`alpha = 0`), incluindo os quatro cantos, formando o corte poligonal.
+Fundo em gradiente laranja, nome e cargo desenhados dentro da imagem, e
+o corte de canto e transparencia de verdade - nao uma cor solida - para
+o fundo branco do painel aparecer por baixo.
 
-Esse recorte era para a especificacao anterior (retrato neutro + texto
-desenhado pelo card em HTML). A especificacao mudou - ver secao abaixo -
-entao `jefferson.png` e um placeholder de transicao ate a peca nova
-(feita no Figma, no padrao da referencia V4) substituir o arquivo.
+Uma versao anterior deste arquivo foi recortada a mao (removendo o
+gradiente e o corte, sobrando so rosto e ombros) por engano, achando que
+o grafismo era indesejado. Nao era: e o design final. O arquivo atual e
+o original, sem recorte. `tools/image/crop-png.mjs` continua no
+repositorio como utilitario generico de recorte de PNG, mas nao e usado
+neste arquivo.
 
 ## Especificacao (atual)
 
