@@ -29,17 +29,20 @@ entao `jefferson.png` e um placeholder de transicao ate a peca nova
 ## Especificacao (atual)
 
 **Peca pronta e autocontida, como a referencia V4 (Flavio Augusto):**
-fundo, nome e cargo desenhados dentro da propria imagem. O card nao
-desenha mais nenhuma informacao em HTML por cima da foto - so a imagem,
-do jeito que ela vier do Figma.
+fundo, corte poligonal de canto, faixa de texto lateral rotacionada e
+texto de base, tudo desenhado dentro da propria imagem. O card renderiza
+a imagem crua - nao desenha nenhuma informacao em HTML por cima, e o
+container nao aplica raio de borda, `overflow:hidden`, `clip-path`,
+borda nem fundo proprios (isso cortaria ou empilharia chrome sobre um
+desenho que ja veio pronto do canto ao canto).
 
-- Formato: PNG ou JPG, a peca inteira (fundo + foto + texto), do jeito
-  que foi montada no Figma. Nao enviar so o retrato solto - o texto e o
-  fundo fazem parte do arquivo agora.
-- Proporcao: livre. O card nao forca nenhum quadro fixo nem corta a
-  imagem - `.leader-slide img` renderiza na largura da coluna com altura
-  em `auto`, preservando a proporcao original do arquivo. Envie do
-  tamanho que fez no Figma.
+- Formato: PNG ou JPG, a peca inteira (fundo + foto + texto + corte de
+  canto), do jeito que foi montada no Figma. Nao enviar so o retrato
+  solto - todo o grafismo faz parte do arquivo agora.
+- Proporcao: livre. O card nao forca nenhum quadro, nao corta e nao
+  arredonda a imagem - `.leader-slide img` renderiza na largura da
+  coluna com altura em `auto`, no formato exato do arquivo, cantos
+  poligonais inclusos. Envie do tamanho que fez no Figma.
 - Nome do arquivo: `jefferson.png` / `guilherme.jpg` ou `.png` (ajustar o
   `src` em `landing.dc.html` se a extensao for diferente de `.png` /
   `.jpg`).

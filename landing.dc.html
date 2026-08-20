@@ -77,17 +77,18 @@
       z-index:-1;pointer-events:none;}
 
     /* Card de lideranca: alterna a foto dos dois fundadores a cada 7s (ver
-       <script> no fim do arquivo). A peca e uma imagem unica e autocontida
-       (fundo, nome e cargo desenhados pelo proprio fundador no Figma) -
-       nenhuma informacao e desenhada em HTML por cima, entao nada duplica.
-       A imagem renderiza no tamanho dela mesma (so a largura da coluna
-       limita, altura em auto) - sem aspect-ratio fixo, sem object-fit
-       cortando nada. Grid-stack - os dois slides ocupam a mesma celula -
-       faz a altura do cartao acompanhar o slide mais alto automaticamente,
-       sem JS medindo nada. */
+       <script> no fim do arquivo). A peca e uma imagem unica e autocontida,
+       renderizada crua (fundo, corte poligonal de canto, faixa de texto
+       lateral e texto de base ja desenhados pelo proprio fundador no
+       Figma) - o container nao aplica raio de borda, overflow:hidden,
+       clip-path, borda nem fundo proprios, para nao cortar ou empilhar
+       chrome sobre um design que ja veio pronto. A imagem renderiza no
+       tamanho dela mesma (so a largura da coluna limita, altura em auto)
+       - sem aspect-ratio fixo, sem object-fit cortando nada. Grid-stack -
+       os dois slides ocupam a mesma celula - faz a altura do cartao
+       acompanhar o slide mais alto automaticamente, sem JS medindo nada. */
     .leader-card{display:flex;flex-direction:column;gap:var(--space-4);}
-    .leader-card__stage{display:grid;border-radius:var(--radius-card-lg);overflow:hidden;
-      background:var(--bg-inverse);border:var(--hairline) solid var(--border-light);}
+    .leader-card__stage{display:grid;}
     .leader-slide{grid-area:1/1;opacity:0;pointer-events:none;
       transition:opacity var(--dur-slow) var(--ease-out);}
     .leader-slide.is-active{opacity:1;pointer-events:auto;}
