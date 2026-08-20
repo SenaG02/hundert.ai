@@ -91,8 +91,10 @@
     /* Primeira secao dentro do painel: espaco branco acima do card de
        lideranca (a secao usa .sec, reaproveitada em todo o resto da
        pagina com espaco maior - aqui, so o topo desta primeira, escopado
-       por posicao). --space-8 * 1.2 = 20% a mais, pedido do cliente. */
-    .panel > .sec:first-child{padding-block-start:calc(var(--space-8) * 1.2);}
+       por posicao). --space-32 (128px) - pedido do cliente foi pelo
+       menos 80% do respiro preto abaixo do formulario (.hero
+       padding-bottom, --space-40 = 160px); 128 e 80% exatos de 160. */
+    .panel > .sec:first-child{padding-block-start:var(--space-32);}
     /* Coluna de texto ao lado do card de lideranca: a imagem e bem mais
        alta que o texto, e por padrao o grid estica o item de texto para
        a altura da linha inteira (align-items:stretch) com o conteudo
