@@ -98,19 +98,23 @@
        renderiza crua: o container nao aplica raio de borda,
        overflow:hidden, clip-path, borda nem fundo proprios, entao o fundo
        branco do painel aparece por baixo do corte, exatamente como no
-       arquivo. A imagem fica na largura da coluna com altura em auto
-       (sem aspect-ratio fixo) e object-fit:contain - sem box de tamanho
-       fixo nos dois eixos ainda e o proprio auto que garante isso, o
-       contain fica so como reforco caso um breakpoint futuro fixe a
-       altura. Grid-stack - os dois slides ocupam a mesma celula - faz a
-       altura do cartao acompanhar o slide mais alto automaticamente, sem
-       JS medindo nada. */
+       arquivo. A imagem fica a 92% da largura da coluna (pedido do
+       cliente - reduz a peca ~8% e, empurrada para a direita via
+       margin-inline-start:auto, abre respiro entre o texto e a foto sem
+       mexer de novo no gap do grid) com altura em auto (sem aspect-ratio
+       fixo) e object-fit:contain - sem box de tamanho fixo nos dois
+       eixos ainda e o proprio auto que garante isso, o contain fica so
+       como reforco caso um breakpoint futuro fixe a altura. Grid-stack -
+       os dois slides ocupam a mesma celula - faz a altura do cartao
+       acompanhar o slide mais alto automaticamente, sem JS medindo
+       nada. */
     .leader-card{display:flex;flex-direction:column;gap:var(--space-4);}
     .leader-card__stage{display:grid;}
     .leader-slide{grid-area:1/1;opacity:0;pointer-events:none;
       transition:opacity var(--dur-slow) var(--ease-out);}
     .leader-slide.is-active{opacity:1;pointer-events:auto;}
-    .leader-slide img{display:block;inline-size:100%;block-size:auto;object-fit:contain;}
+    .leader-slide img{display:block;inline-size:92%;block-size:auto;
+      object-fit:contain;margin-inline-start:auto;}
     /* Estado de fallback: nenhum erro real, so o par ainda nao ter sido enviado.
        Some sozinho assim que os arquivos existirem em assets/founders/. */
     .leader-slide__fallback{display:none;}
