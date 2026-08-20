@@ -131,10 +131,11 @@
   --radius-card-lg: 24px;  /* [E-vis] card do formulario, card branco de servico */
   --radius-panel:   56px;  /* [E-vis] canto do painel claro contra o escuro (diagonal,
                               padrao do sistema - ver design-system.dc.html) */
-  --radius-panel-uniform: 32px; /* [C] especificado pelo cliente - raio igual nos 4 cantos,
+  --radius-panel-uniform: 48px; /* [C] especificado pelo cliente - raio igual nos 4 cantos,
                               usado so na landing (secao "Quem senta na mesa"), onde o
                               cliente pediu um container fechado em vez do recorte
-                              diagonal de --radius-panel */
+                              diagonal de --radius-panel. Ajustado de 32px para 48px a
+                              pedido do cliente - curva mais proeminente contra o escuro */
   --radius-pill:    999px; /* [E-vis] CTA e pill de aba */
   --hairline:       1px;   /* [I] espessura unica de fio em todo o sistema */
 

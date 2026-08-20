@@ -53,13 +53,13 @@
    inline-flex entrega o mesmo alinhamento interno (texto + seta) sem
    esse risco; align-items/justify-content:center cobrem o pedido do
    cliente de centralizar o conteudo nos dois eixos. */
-.cta{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-3);
   border:0;cursor:pointer;
   background:var(--action); /* alicerce solido: navegador sem suporte a gradiente para aqui */
   background-image:linear-gradient(135deg,var(--action-gradient-from) 0%,var(--action-gradient-to) 100%);
   color:var(--fg-on-dark);font-family:inherit;
-  font-size:var(--text-md);font-weight:var(--weight-bold);text-decoration:none;
-  padding:var(--space-3) var(--space-8);border-radius:var(--radius-pill);
+  font-size:var(--text-lg);font-weight:var(--weight-bold);text-decoration:none;
+  padding:var(--space-4) var(--space-12);border-radius:var(--radius-pill);
   box-shadow:var(--shadow-cta);transition:transform var(--dur-normal) var(--ease-out),
   box-shadow var(--dur-normal) var(--ease-out);}
 /* Hover troca para solido, nao gradiente: CSS nao anima a transicao entre um
