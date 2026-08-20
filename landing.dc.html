@@ -73,7 +73,7 @@
        terminam juntos perto do painel, sem esse vazio assimetrico. */
     .hero{display:grid;gap:var(--space-16);align-items:end;
       grid-template-columns:minmax(0,1.15fr) minmax(min(100%,var(--track-card)),0.85fr);
-      padding-block:var(--space-16) var(--space-12);}
+      padding-block:var(--space-16) var(--space-40);}
 
     /* Brilho radial de marca. Fundo, nunca texto. */
     .glow{position:relative;isolation:isolate;overflow:hidden;}
@@ -85,11 +85,11 @@
     /* Painel "Quem senta na mesa": override so nesta pagina. O padrao do
        sistema (--radius-panel, ver design-system.dc.html) arredonda so
        dois cantos diagonais do painel claro contra o fundo escuro; o
-       cliente pediu um container fechado, com raio igual nos 4 cantos -
-       e a transicao contra o hero escuro mais justa, entao o painel sobe
-       por cima do padding inferior do hero (margin-block-start negativo)
-       em vez de ficar flutuando com folga. */
-    .panel{border-radius:var(--radius-panel-uniform);margin-block-start:calc(-1 * var(--space-8));}
+       cliente pediu um container fechado, com raio igual nos 4 cantos.
+       Sem margin-block-start negativo: o respiro entre o hero e o painel
+       vem do padding-bottom do proprio .hero (--space-40), nao de puxar
+       o painel por cima dele. */
+    .panel{border-radius:var(--radius-panel-uniform);}
     /* Primeira secao dentro do painel: reduz o respiro superior (a secao
        usa .sec, reaproveitada em todo o resto da pagina com espaco maior
        - aqui, so o topo desta primeira, escopado por posicao). */
