@@ -1,13 +1,34 @@
 # Fotos dos fundadores
 
-Coloque aqui os dois arquivos que o card de lideranca da landing usa
+Os dois arquivos que o card de lideranca da landing usa
 (`landing.dc.html`, secao "Quem senta na mesa"):
 
-- `jefferson.jpg`
-- `guilherme.jpg`
+- `jefferson.png` - ja aplicada
+- `guilherme.jpg` ou `guilherme.png` - falta
 
-Nomes exatos, extensao `.jpg`. Se preferir `.png`, ajuste os dois `src` no
-HTML (busque por `assets/founders/`).
+Nome exato (`jefferson` / `guilherme`), qualquer extensao de imagem
+comum. Ao adicionar `guilherme`, ajuste o `src` correspondente em
+`landing.dc.html` se a extensao nao for `.jpg`.
+
+## jefferson.png - de onde veio
+
+Recortada a mao de uma peca de identidade ja pronta (fundo em gradiente
+laranja, nome e cargo desenhados dentro da imagem, canto chanfrado) que
+chegou como o unico material disponivel. O recorte usado
+(`tools/image/crop-png.mjs`, script proprio deste repositorio - decodifica
+os pixels do PNG, corta o retangulo pedido e reescreve um PNG valido)
+isolou so o rosto e ombros, removendo a faixa de nome vertical a
+esquerda, a legenda inferior e o canto chanfrado, na proporcao 4:5 que o
+card espera. Comando exato aplicado sobre o arquivo original
+(`Jefferson.JPG.png`, ja removido do repositorio apos o recorte):
+`node tools/image/crop-png.mjs Jefferson.JPG.png jefferson.png 450 100 880 1100`.
+O fundo laranja da peca original permanece - so o texto duplicado e a
+forma cortada foram removidos, que era o problema real (duplicar
+informacao que o card ja desenha em HTML, misturando duas paletas de cor
+na mesma tela).
+
+Se uma foto nova, mais neutra, aparecer depois, e so substituir o
+arquivo - o card nao muda.
 
 ## Especificacao
 
