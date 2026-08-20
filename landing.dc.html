@@ -65,13 +65,11 @@
       transition:color var(--dur-normal) var(--ease-standard);}
     .nav__links a:hover{color:var(--accent-brand);}
 
-    /* align-items:end (nao center): o formulario (6 campos + consentimento
-       + botao) e bem mais alto que o bloco de texto ao lado. Centralizado,
-       o bloco de texto sobra vazio embaixo (metade da diferenca de altura
-       vira buraco escuro so daquele lado, mesmo com o padding do hero e a
-       margem do painel abaixo corretos) - alinhado pela base, os dois
-       terminam juntos perto do painel, sem esse vazio assimetrico. */
-    .hero{display:grid;gap:var(--space-16);align-items:end;
+    /* align-items:center, a pedido do cliente: texto e formulario
+       centralizados verticalmente um em relacao ao outro (o formulario e
+       mais alto - centralizado, a diferenca de altura fica dividida em
+       cima e embaixo dos dois, em vez de toda embaixo). */
+    .hero{display:grid;gap:var(--space-16);align-items:center;
       grid-template-columns:minmax(0,1.15fr) minmax(min(100%,var(--track-card)),0.85fr);
       padding-block:var(--space-16) var(--space-40);}
 
@@ -90,10 +88,11 @@
        vem do padding-bottom do proprio .hero (--space-40), nao de puxar
        o painel por cima dele. */
     .panel{border-radius:var(--radius-panel-uniform);}
-    /* Primeira secao dentro do painel: reduz o respiro superior (a secao
-       usa .sec, reaproveitada em todo o resto da pagina com espaco maior
-       - aqui, so o topo desta primeira, escopado por posicao). */
-    .panel > .sec:first-child{padding-block-start:var(--space-8);}
+    /* Primeira secao dentro do painel: espaco branco acima do card de
+       lideranca (a secao usa .sec, reaproveitada em todo o resto da
+       pagina com espaco maior - aqui, so o topo desta primeira, escopado
+       por posicao). --space-8 * 1.2 = 20% a mais, pedido do cliente. */
+    .panel > .sec:first-child{padding-block-start:calc(var(--space-8) * 1.2);}
     /* Coluna de texto ao lado do card de lideranca: a imagem e bem mais
        alta que o texto, e por padrao o grid estica o item de texto para
        a altura da linha inteira (align-items:stretch) com o conteudo
