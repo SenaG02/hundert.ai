@@ -3,28 +3,27 @@
 Os dois arquivos que o card de lideranca da landing usa
 (`landing.dc.html`, secao "Quem senta na mesa"):
 
-- `jefferson.png` - ja aplicada
-- `guilherme.jpg` ou `guilherme.png` - falta
+- `jefferson.png` - aplicada
+- `guilherme.png` - aplicada
 
-Nome exato (`jefferson` / `guilherme`), qualquer extensao de imagem
-comum. Ao adicionar `guilherme`, ajuste o `src` correspondente em
-`landing.dc.html` se a extensao nao for `.jpg`.
+Ambas as pecas finais ja estao no lugar - nenhuma foto falta.
 
-## jefferson.png - o que e o arquivo
+## jefferson.png e guilherme.png - o que sao os arquivos
 
-`jefferson.png` e a peca final feita no Figma: 1588x2249, PNG com canal
-alfa real (RGBA) - cerca de 20% dos pixels sao totalmente transparentes
-(`alpha = 0`), incluindo os quatro cantos, formando o corte poligonal.
-Fundo em gradiente laranja, nome e cargo desenhados dentro da imagem, e
-o corte de canto e transparencia de verdade - nao uma cor solida - para
-o fundo branco do painel aparecer por baixo.
+Mesma peca de identidade feita no Figma para os dois fundadores:
+1588x2249, PNG com canal alfa real (RGBA) - cerca de 20% dos pixels sao
+totalmente transparentes (`alpha = 0`), incluindo os quatro cantos,
+formando o corte poligonal. Fundo em gradiente, nome e cargo desenhados
+dentro da imagem, e o corte de canto e transparencia de verdade - nao
+uma cor solida - para o fundo branco do painel aparecer por baixo.
 
-Uma versao anterior deste arquivo foi recortada a mao (removendo o
+Uma versao anterior de `jefferson.png` foi recortada a mao (removendo o
 gradiente e o corte, sobrando so rosto e ombros) por engano, achando que
 o grafismo era indesejado. Nao era: e o design final. O arquivo atual e
-o original, sem recorte. `tools/image/crop-png.mjs` continua no
+o original, sem recorte - `guilherme.png` chegou ja no mesmo padrao,
+sem precisar de ajuste. `tools/image/crop-png.mjs` continua no
 repositorio como utilitario generico de recorte de PNG, mas nao e usado
-neste arquivo.
+em nenhum dos dois arquivos atuais.
 
 ## Especificacao (atual)
 
@@ -43,9 +42,8 @@ desenho que ja veio pronto do canto ao canto).
   arredonda a imagem - `.leader-slide img` renderiza na largura da
   coluna com altura em `auto`, no formato exato do arquivo, cantos
   poligonais inclusos. Envie do tamanho que fez no Figma.
-- Nome do arquivo: `jefferson.png` / `guilherme.jpg` ou `.png` (ajustar o
-  `src` em `landing.dc.html` se a extensao for diferente de `.png` /
-  `.jpg`).
+- Nome do arquivo: `jefferson.png` / `guilherme.png` (ajustar o `src`
+  em `landing.dc.html` se uma peca nova vier com outra extensao).
 - **Texto alternativo:** como o nome e cargo agora estao so dentro da
   imagem (nao em HTML), o `alt` de cada `<img>` em `landing.dc.html`
   carrega essa informacao para quem usa leitor de tela. Ja atualizado
@@ -61,8 +59,8 @@ trava a troca automatica - exigencia de acessibilidade (WCAG 2.2.2) para
 qualquer conteudo que se move sozinho por mais de 5 segundos. Sem botao
 de pausa visivel de proposito: os tres caminhos acima ja cobrem a regra.
 
-Enquanto os arquivos nao existirem aqui, o navegador mostra um circulo
-com as iniciais no lugar da foto. Isso nao e um erro nem placeholder de
-texto falso: e o estado de fallback ja programado, pensado para
-desaparecer sozinho assim que os arquivos forem adicionados. Nenhum
-codigo precisa mudar.
+Se um dos arquivos algum dia faltar (por exemplo, uma peca nova
+substituindo a atual antes da outra ficar pronta), o navegador mostra
+um circulo com as iniciais no lugar da foto - nao e um erro, e o estado
+de fallback ja programado, pensado para desaparecer sozinho assim que o
+arquivo existir de novo. Nenhum codigo precisa mudar.
