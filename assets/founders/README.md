@@ -10,40 +10,45 @@ Nome exato (`jefferson` / `guilherme`), qualquer extensao de imagem
 comum. Ao adicionar `guilherme`, ajuste o `src` correspondente em
 `landing.dc.html` se a extensao nao for `.jpg`.
 
-## jefferson.png - de onde veio
+## jefferson.png - estado atual (provisorio)
 
-Recortada a mao de uma peca de identidade ja pronta (fundo em gradiente
-laranja, nome e cargo desenhados dentro da imagem, canto chanfrado) que
-chegou como o unico material disponivel. O recorte usado
-(`tools/image/crop-png.mjs`, script proprio deste repositorio - decodifica
-os pixels do PNG, corta o retangulo pedido e reescreve um PNG valido)
-isolou so o rosto e ombros, removendo a faixa de nome vertical a
-esquerda, a legenda inferior e o canto chanfrado, na proporcao 4:5 que o
-card espera. Comando exato aplicado sobre o arquivo original
-(`Jefferson.JPG.png`, ja removido do repositorio apos o recorte):
+`jefferson.png` hoje e um retrato simples: recorte manual de uma peca de
+identidade que chegou pronta (fundo em gradiente laranja, nome e cargo
+desenhados dentro da imagem, canto chanfrado), removendo esse grafismo
+para sobrar so rosto e ombros - feito com `tools/image/crop-png.mjs`
+(script proprio deste repositorio, decodifica os pixels do PNG, corta o
+retangulo pedido, reescreve um PNG valido). Comando exato usado sobre o
+arquivo original (`Jefferson.JPG.png`, ja removido do repositorio):
 `node tools/image/crop-png.mjs Jefferson.JPG.png jefferson.png 450 100 880 1100`.
-O fundo laranja da peca original permanece - so o texto duplicado e a
-forma cortada foram removidos, que era o problema real (duplicar
-informacao que o card ja desenha em HTML, misturando duas paletas de cor
-na mesma tela).
 
-Se uma foto nova, mais neutra, aparecer depois, e so substituir o
-arquivo - o card nao muda.
+Esse recorte era para a especificacao anterior (retrato neutro + texto
+desenhado pelo card em HTML). A especificacao mudou - ver secao abaixo -
+entao `jefferson.png` e um placeholder de transicao ate a peca nova
+(feita no Figma, no padrao da referencia V4) substituir o arquivo.
 
-## Especificacao
+## Especificacao (atual)
 
-- **Retrato simples, sem grafismo.** So a foto: sem gradiente de fundo,
-  sem nome ou cargo desenhado dentro da imagem, sem moldura ou canto
-  cortado. O card ja desenha nome, cargo e credencial em HTML por cima da
-  foto, no sistema visual da Hundert - uma peca pronta com texto embutido
-  duplica essa informacao e mistura duas paletas de cor diferentes na
-  mesma tela.
-- Proporcao 4:5 (retrato). A imagem e cortada automaticamente
-  (`object-fit: cover`) para preencher esse quadro - enquadre o rosto
-  centralizado, com folga nas bordas para o corte nao cortar a cabeca.
-- Minimo recomendado: 800x1000px.
-- Fundo e iluminacao parecidos entre as duas fotos ajudam o card a nao
-  parecer duas fotos de fontes diferentes quando alterna.
+**Peca pronta e autocontida, como a referencia V4 (Flavio Augusto):**
+fundo, nome e cargo desenhados dentro da propria imagem. O card nao
+desenha mais nenhuma informacao em HTML por cima da foto - so a imagem,
+do jeito que ela vier do Figma.
+
+- Formato: PNG ou JPG, a peca inteira (fundo + foto + texto), do jeito
+  que foi montada no Figma. Nao enviar so o retrato solto - o texto e o
+  fundo fazem parte do arquivo agora.
+- Proporcao: mantenha proxima de 4:5 (retrato) se possivel - e o quadro
+  que o card usa hoje (`aspect-ratio` em `.leader-slide`, com
+  `object-fit: cover`, que corta o excesso mantendo o centro). Se a peca
+  do Figma tiver outra proporcao, me avisa qual para eu ajustar o quadro
+  do card em vez de deixar o `cover` cortar nome ou rosto.
+- Nome do arquivo: `jefferson.png` / `guilherme.jpg` ou `.png` (ajustar o
+  `src` em `landing.dc.html` se a extensao for diferente de `.png` /
+  `.jpg`).
+- **Texto alternativo:** como o nome e cargo agora estao so dentro da
+  imagem (nao em HTML), o `alt` de cada `<img>` em `landing.dc.html`
+  carrega essa informacao para quem usa leitor de tela. Ja atualizado
+  para o texto atual - se algo mudar (cargo, credencial), atualizar o
+  `alt` junto com a imagem.
 
 ## Como funciona
 

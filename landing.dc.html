@@ -21,10 +21,13 @@
   O card "Quem senta na mesa" JA esta pronto para foto: ele alterna entre
   Jefferson e Guilherme a cada 7s (script no fim do arquivo) e ate as fotos
   chegarem mostra um circulo com iniciais no lugar - nao e placeholder de
-  texto falso, e o estado real de fallback. Foto do Jefferson ja aplicada
-  (assets/founders/jefferson.png - recortada de uma peca com grafismo, ver
-  README na pasta). Falta so assets/founders/guilherme.jpg ou .png (specs
-  em assets/founders/README.md); nenhum codigo precisa mudar quando chegar.
+  texto falso, e o estado real de fallback. O card mostra so a imagem, sem
+  nenhuma informacao desenhada em HTML por cima - a peca (fundo, nome,
+  cargo) e feita pronta no Figma, no padrao da referencia V4; o texto
+  alternativo de cada foto carrega nome/cargo para leitor de tela. jefferson.png hoje e
+  um retrato provisorio (ainda sem o padrao novo, ver
+  assets/founders/README.md); falta a peca nova dele e a de
+  assets/founders/guilherme.jpg ou .png (specs no mesmo README).
 
   A secao de servicos e o bloco de lideranca foram escritos a partir de
   research/guilherme-portfolio/EXTRACTED.md - conteudo real, nao mais
@@ -73,39 +76,29 @@
       background:radial-gradient(circle,var(--accent-brand-glow),transparent 70%);
       z-index:-1;pointer-events:none;}
 
-    /* Card de lideranca: alterna foto e especialidades entre os dois fundadores
-       a cada 7s (ver <script> no fim do arquivo). Grid-stack - os dois slides
-       ocupam a mesma celula - faz a altura do cartao acompanhar o slide mais
-       alto automaticamente, sem JS medindo nada. */
+    /* Card de lideranca: alterna a foto dos dois fundadores a cada 7s (ver
+       <script> no fim do arquivo). A peca e uma imagem unica e autocontida
+       (fundo, nome e cargo desenhados pelo proprio fundador no Figma) -
+       nenhuma informacao e desenhada em HTML por cima, entao nada duplica.
+       Grid-stack - os dois slides ocupam a mesma celula - faz a altura do
+       cartao acompanhar o slide mais alto automaticamente, sem JS medindo
+       nada. */
     .leader-card{display:flex;flex-direction:column;gap:var(--space-4);}
     .leader-card__stage{display:grid;border-radius:var(--radius-card-lg);overflow:hidden;
       background:var(--bg-inverse);border:var(--hairline) solid var(--border-light);}
-    .leader-slide{grid-area:1/1;display:flex;flex-direction:column;
-      opacity:0;pointer-events:none;transition:opacity var(--dur-slow) var(--ease-out);}
+    .leader-slide{grid-area:1/1;position:relative;aspect-ratio:4/5;overflow:hidden;
+      background:var(--bg-elevated);opacity:0;pointer-events:none;
+      transition:opacity var(--dur-slow) var(--ease-out);}
     .leader-slide.is-active{opacity:1;pointer-events:auto;}
-    .leader-slide__media{position:relative;aspect-ratio:4/5;overflow:hidden;
-      background:var(--bg-elevated);}
-    .leader-slide__media img{position:absolute;inset:0;inline-size:100%;block-size:100%;
+    .leader-slide img{position:absolute;inset:0;inline-size:100%;block-size:100%;
       object-fit:cover;display:block;}
     /* Estado de fallback: nenhum erro real, so o par ainda nao ter sido enviado.
        Some sozinho assim que os arquivos existirem em assets/founders/. */
     .leader-slide__fallback{display:none;}
-    .leader-slide--noimg .leader-slide__media img{display:none;}
+    .leader-slide--noimg img{display:none;}
     .leader-slide--noimg .leader-slide__fallback{display:grid;place-items:center;
       position:absolute;inset:0;margin:auto;inline-size:var(--space-24);
       block-size:var(--space-24);font-size:var(--text-2xl);}
-    .leader-slide__info{padding:var(--space-6);display:flex;flex-direction:column;
-      gap:var(--space-2);}
-    .founder__role{display:block;font-size:var(--text-sm);color:var(--accent-brand-deep);
-      font-weight:var(--weight-semibold);}
-    .leader-slide__credential{display:block;font-size:var(--text-xs);
-      color:var(--fg-on-light-muted);}
-    .tags{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-block-start:var(--space-2);
-      list-style:none;padding:0;}
-    .tags li{font-size:var(--text-xs);font-weight:var(--weight-semibold);
-      color:var(--fg-on-light-muted);background:var(--surface-form);
-      border:var(--hairline) solid var(--border-light);border-radius:var(--radius-pill);
-      padding:var(--space-1) var(--space-3);}
     /* Sem botao de pausa visivel: hover, foco de teclado e clique num ponto
        (que ja para a troca automatica de proposito) cobrem a exigencia de
        acessibilidade de dar controle sobre conteudo que se move sozinho. */
@@ -277,35 +270,14 @@
         <div class="leader-card">
           <div class="leader-card__stage">
             <figure class="leader-slide is-active">
-              <div class="leader-slide__media">
-                <img src="./assets/founders/jefferson.png" alt="Foto de Jefferson">
-                <span class="avatar leader-slide__fallback" aria-hidden="true">J</span>
-              </div>
-              <figcaption class="leader-slide__info">
-                <strong>Jefferson Sofarelli</strong>
-                <span class="founder__role">IA &amp; Desenvolvimento</span>
-                <span class="leader-slide__credential">Founder Hundert AI · +20 anos de experiência</span>
-                <ul class="tags">
-                  <li>Inteligência Artificial</li>
-                  <li>Desenvolvimento de Software</li>
-                </ul>
-              </figcaption>
+              <img src="./assets/founders/jefferson.png"
+                alt="Jefferson Sofarelli, Founder Hundert AI - IA e Desenvolvimento de Software">
+              <span class="avatar leader-slide__fallback" aria-hidden="true">J</span>
             </figure>
             <figure class="leader-slide" aria-hidden="true">
-              <div class="leader-slide__media">
-                <img src="./assets/founders/guilherme.jpg" alt="Foto de Guilherme Sena">
-                <span class="avatar leader-slide__fallback" aria-hidden="true">GS</span>
-              </div>
-              <figcaption class="leader-slide__info">
-                <strong>Guilherme Sena</strong>
-                <span class="founder__role">Marketing &amp; Posicionamento</span>
-                <span class="leader-slide__credential">100 mil seguidores em 6 meses, 100% orgânico</span>
-                <ul class="tags">
-                  <li>Estratégia de Conteúdo</li>
-                  <li>Crescimento Orgânico</li>
-                  <li>Posicionamento de Marca</li>
-                </ul>
-              </figcaption>
+              <img src="./assets/founders/guilherme.jpg"
+                alt="Guilherme Sena, Hundert AI - Marketing e Posicionamento">
+              <span class="avatar leader-slide__fallback" aria-hidden="true">GS</span>
             </figure>
           </div>
           <div class="leader-card__controls">
