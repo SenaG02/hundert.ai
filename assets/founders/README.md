@@ -36,11 +36,10 @@ do jeito que ela vier do Figma.
 - Formato: PNG ou JPG, a peca inteira (fundo + foto + texto), do jeito
   que foi montada no Figma. Nao enviar so o retrato solto - o texto e o
   fundo fazem parte do arquivo agora.
-- Proporcao: mantenha proxima de 4:5 (retrato) se possivel - e o quadro
-  que o card usa hoje (`aspect-ratio` em `.leader-slide`, com
-  `object-fit: cover`, que corta o excesso mantendo o centro). Se a peca
-  do Figma tiver outra proporcao, me avisa qual para eu ajustar o quadro
-  do card em vez de deixar o `cover` cortar nome ou rosto.
+- Proporcao: livre. O card nao forca nenhum quadro fixo nem corta a
+  imagem - `.leader-slide img` renderiza na largura da coluna com altura
+  em `auto`, preservando a proporcao original do arquivo. Envie do
+  tamanho que fez no Figma.
 - Nome do arquivo: `jefferson.png` / `guilherme.jpg` ou `.png` (ajustar o
   `src` em `landing.dc.html` se a extensao for diferente de `.png` /
   `.jpg`).

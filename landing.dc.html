@@ -80,25 +80,25 @@
        <script> no fim do arquivo). A peca e uma imagem unica e autocontida
        (fundo, nome e cargo desenhados pelo proprio fundador no Figma) -
        nenhuma informacao e desenhada em HTML por cima, entao nada duplica.
-       Grid-stack - os dois slides ocupam a mesma celula - faz a altura do
-       cartao acompanhar o slide mais alto automaticamente, sem JS medindo
-       nada. */
+       A imagem renderiza no tamanho dela mesma (so a largura da coluna
+       limita, altura em auto) - sem aspect-ratio fixo, sem object-fit
+       cortando nada. Grid-stack - os dois slides ocupam a mesma celula -
+       faz a altura do cartao acompanhar o slide mais alto automaticamente,
+       sem JS medindo nada. */
     .leader-card{display:flex;flex-direction:column;gap:var(--space-4);}
     .leader-card__stage{display:grid;border-radius:var(--radius-card-lg);overflow:hidden;
       background:var(--bg-inverse);border:var(--hairline) solid var(--border-light);}
-    .leader-slide{grid-area:1/1;position:relative;aspect-ratio:4/5;overflow:hidden;
-      background:var(--bg-elevated);opacity:0;pointer-events:none;
+    .leader-slide{grid-area:1/1;opacity:0;pointer-events:none;
       transition:opacity var(--dur-slow) var(--ease-out);}
     .leader-slide.is-active{opacity:1;pointer-events:auto;}
-    .leader-slide img{position:absolute;inset:0;inline-size:100%;block-size:100%;
-      object-fit:cover;display:block;}
+    .leader-slide img{display:block;inline-size:100%;block-size:auto;}
     /* Estado de fallback: nenhum erro real, so o par ainda nao ter sido enviado.
        Some sozinho assim que os arquivos existirem em assets/founders/. */
     .leader-slide__fallback{display:none;}
     .leader-slide--noimg img{display:none;}
     .leader-slide--noimg .leader-slide__fallback{display:grid;place-items:center;
-      position:absolute;inset:0;margin:auto;inline-size:var(--space-24);
-      block-size:var(--space-24);font-size:var(--text-2xl);}
+      inline-size:var(--space-24);block-size:var(--space-24);font-size:var(--text-2xl);
+      margin:var(--space-16) auto;}
     /* Sem botao de pausa visivel: hover, foco de teclado e clique num ponto
        (que ja para a troca automatica de proposito) cobrem a exigencia de
        acessibilidade de dar controle sobre conteudo que se move sozinho. */
